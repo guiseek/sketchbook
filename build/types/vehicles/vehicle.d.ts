@@ -1,4 +1,4 @@
-import { Character } from '../characters/Character';
+import { Character } from '../characters/character';
 import * as THREE from 'three';
 import * as CANNON from 'cannon';
 import { World } from '../world/World';
@@ -7,13 +7,12 @@ import { VehicleSeat } from './VehicleSeat';
 import { Wheel } from './Wheel';
 import { EntityType } from '../enums/EntityType';
 import { IWorldEntity } from '../interfaces/IWorldEntity';
+import { VehicleAction } from '../types/vehicle-action';
 export declare abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     updateOrder: number;
     abstract entityType: EntityType;
     controllingCharacter: Character;
-    actions: {
-        [action: string]: KeyBinding;
-    };
+    abstract actions: Record<VehicleAction, KeyBinding>;
     rayCastVehicle: CANNON.RaycastVehicle;
     seats: VehicleSeat[];
     wheels: Wheel[];

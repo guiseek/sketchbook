@@ -1,4 +1,4 @@
-import { Character } from '../characters/Character';
+import { Character } from '../characters/character';
 export interface ICharacterAI {
     character: Character;
     update(timeStep: number): void;

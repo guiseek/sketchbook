@@ -11,8 +11,8 @@ import { IWorldEntity } from '../interfaces/IWorldEntity';
 import { VehicleSeat } from '../vehicles/VehicleSeat';
 import { Vehicle } from '../vehicles/Vehicle';
 import { CapsuleCollider } from '../physics/colliders/CapsuleCollider';
-import { VehicleEntryInstance } from './VehicleEntryInstance';
-import { GroundImpactData } from './GroundImpactData';
+import { VehicleEntryInstance } from './vehicle-entry-instance';
+import { GroundImpactData } from './ground-impact-data';
 import { EntityType } from '../enums/EntityType';
 export declare class Character extends THREE.Object3D implements IWorldEntity {
     updateOrder: number;

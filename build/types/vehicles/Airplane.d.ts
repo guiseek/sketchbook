@@ -3,8 +3,11 @@ import * as CANNON from 'cannon';
 import { Vehicle } from './Vehicle';
 import { IControllable } from '../interfaces/IControllable';
 import { IWorldEntity } from '../interfaces/IWorldEntity';
+import { KeyBinding } from '../core/KeyBinding';
 import { EntityType } from '../enums/EntityType';
+import { VehicleAirplaneAction } from '../types/vehicle-action';
 export declare class Airplane extends Vehicle implements IControllable, IWorldEntity {
+    actions: Record<VehicleAirplaneAction, KeyBinding>;
     entityType: EntityType;
     rotor: THREE.Object3D;
     leftAileron: THREE.Object3D;

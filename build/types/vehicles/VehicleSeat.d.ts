@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { SeatType } from '../enums/SeatType';
 import { IControllable } from '../interfaces/IControllable';
 import { VehicleDoor } from './VehicleDoor';
-import { Character } from '../characters/Character';
+import { Character } from '../characters/character';
 export declare class VehicleSeat {
     vehicle: IControllable;
     seatPointObject: THREE.Object3D;

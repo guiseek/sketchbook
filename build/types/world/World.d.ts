@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon';
-import { CameraOperator } from '../core/CameraOperator';
+import { CameraOperator } from '../core/camera-operator';
 import { Stats } from '../../lib/utils/Stats';
 import { CannonDebugRenderer } from '../../lib/cannon/CannonDebugRenderer';
 import { InputManager } from '../core/InputManager';
@@ -8,7 +8,7 @@ import { LoadingManager } from '../core/LoadingManager';
 import { InfoStack } from '../core/InfoStack';
 import { IWorldEntity } from '../interfaces/IWorldEntity';
 import { IUpdatable } from '../interfaces/IUpdatable';
-import { Character } from '../characters/Character';
+import { Character } from '../characters/character';
 import { Path } from './Path';
 import { Vehicle } from '../vehicles/Vehicle';
 import { Scenario } from './Scenario';

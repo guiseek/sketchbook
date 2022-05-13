@@ -1,5 +1,5 @@
 import { CharacterStateBase } from '../_stateLibrary';
-import { Character } from '../../Character';
+import { Character } from '../../character';
 import { VehicleSeat } from 'src/ts/vehicles/VehicleSeat';
 export declare class Sitting extends CharacterStateBase {
     private seat;
