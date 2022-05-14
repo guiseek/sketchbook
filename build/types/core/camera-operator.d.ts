@@ -1,19 +1,19 @@
-import * as THREE from 'three';
-import { World } from '../world/World';
 import { IInputReceiver } from '../interfaces/iinput-receiver';
-import { KeyBinding } from './key-binding';
-import { Character } from '../characters/character';
+import { Camera, Vector2, Vector3 } from 'three';
 import { IUpdatable } from '../interfaces/iupdatable';
+import { Character } from '../characters/character';
+import { KeyBinding } from './key-binding';
+import { World } from '../world/World';
 export declare class CameraOperator implements IInputReceiver, IUpdatable {
     updateOrder: number;
     world: World;
-    camera: THREE.Camera;
-    target: THREE.Vector3;
-    sensitivity: THREE.Vector2;
+    camera: Camera;
+    target: Vector3;
+    sensitivity: Vector2;
     radius: number;
     theta: number;
     phi: number;
-    onMouseDownPosition: THREE.Vector2;
+    onMouseDownPosition: Vector2;
     onMouseDownTheta: any;
     onMouseDownPhi: any;
     targetRadius: number;
@@ -26,7 +26,7 @@ export declare class CameraOperator implements IInputReceiver, IUpdatable {
     rightVelocity: number;
     followMode: boolean;
     characterCaller: Character;
-    constructor(world: World, camera: THREE.Camera, sensitivityX?: number, sensitivityY?: number);
+    constructor(world: World, camera: Camera, sensitivityX?: number, sensitivityY?: number);
     setSensitivity(sensitivityX: number, sensitivityY?: number): void;
     setRadius(value: number, instantly?: boolean): void;
     move(deltaX: number, deltaY: number): void;

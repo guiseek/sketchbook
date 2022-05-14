@@ -1,5 +1,5 @@
-import { InfoStackMessage } from './Info-stack-message';
 import { IWorldEntity } from '../interfaces/iworld-entity';
+import { InfoStackMessage } from './Info-stack-message';
 import { EntityType } from '../enums/entity-type';
 import { World } from '../world/World';
 export declare class InfoStack implements IWorldEntity {

@@ -1,44 +1,44 @@
-import * as THREE from 'three';
 import * as CANNON from 'cannon';
 import { KeyBinding } from '../core/key-binding';
 import { VectorSpringSimulator } from '../physics/spring_simulation/vector-spring-simulator';
 import { RelativeSpringSimulator } from '../physics/spring_simulation/relative-spring-simulator';
-import { ICharacterAI } from '../interfaces/icharacter-ai';
-import { World } from '../world/World';
-import { IControllable } from '../interfaces/icontrollable';
-import { ICharacterState } from '../interfaces/icharacter-state';
-import { IWorldEntity } from '../interfaces/iworld-entity';
-import { VehicleSeat } from '../vehicles/vehicle-seat';
-import { Vehicle } from '../vehicles/vehicle';
 import { CapsuleCollider } from '../physics/colliders/capsule-collider';
+import { ICharacterState } from '../interfaces/icharacter-state';
 import { VehicleEntryInstance } from './vehicle-entry-instance';
+import { IControllable } from '../interfaces/icontrollable';
+import { IWorldEntity } from '../interfaces/iworld-entity';
+import { ICharacterAI } from '../interfaces/icharacter-ai';
 import { GroundImpactData } from './ground-impact-data';
+import { VehicleSeat } from '../vehicles/vehicle-seat';
 import { EntityType } from '../enums/entity-type';
-export declare class Character extends THREE.Object3D implements IWorldEntity {
+import { Vehicle } from '../vehicles/vehicle';
+import { World } from '../world/World';
+import { AnimationMixer, Object3D, Material, Vector3, Group, Mesh } from 'three';
+export declare class Character extends Object3D implements IWorldEntity {
     updateOrder: number;
     entityType: EntityType;
     height: number;
-    tiltContainer: THREE.Group;
-    modelContainer: THREE.Group;
-    materials: THREE.Material[];
-    mixer: THREE.AnimationMixer;
+    tiltContainer: Group;
+    modelContainer: Group;
+    materials: Material[];
+    mixer: AnimationMixer;
     animations: any[];
-    acceleration: THREE.Vector3;
-    velocity: THREE.Vector3;
-    arcadeVelocityInfluence: THREE.Vector3;
-    velocityTarget: THREE.Vector3;
+    acceleration: Vector3;
+    velocity: Vector3;
+    arcadeVelocityInfluence: Vector3;
+    velocityTarget: Vector3;
     arcadeVelocityIsAdditive: boolean;
     defaultVelocitySimulatorDamping: number;
     defaultVelocitySimulatorMass: number;
     velocitySimulator: VectorSpringSimulator;
     moveSpeed: number;
     angularVelocity: number;
-    orientation: THREE.Vector3;
-    orientationTarget: THREE.Vector3;
+    orientation: Vector3;
+    orientationTarget: Vector3;
     defaultRotationSimulatorDamping: number;
     defaultRotationSimulatorMass: number;
     rotationSimulator: RelativeSpringSimulator;
-    viewVector: THREE.Vector3;
+    viewVector: Vector3;
     actions: {
         [action: string]: KeyBinding;
     };
@@ -50,7 +50,7 @@ export declare class Character extends THREE.Object3D implements IWorldEntity {
     wantsToJump: boolean;
     initJumpSpeed: number;
     groundImpactData: GroundImpactData;
-    raycastBox: THREE.Mesh;
+    raycastBox: Mesh;
     world: World;
     charState: ICharacterState;
     behaviour: ICharacterAI;
@@ -61,7 +61,7 @@ export declare class Character extends THREE.Object3D implements IWorldEntity {
     constructor(gltf: any);
     setAnimations(animations: []): void;
     setArcadeVelocityInfluence(x: number, y?: number, z?: number): void;
-    setViewVector(vector: THREE.Vector3): void;
+    setViewVector(vector: Vector3): void;
     /**
      * Set state to the player. Pass state class (function) name.
      * @param {function} State
@@ -70,7 +70,7 @@ export declare class Character extends THREE.Object3D implements IWorldEntity {
     setPosition(x: number, y: number, z: number): void;
     resetVelocity(): void;
     setArcadeVelocityTarget(velZ: number, velX?: number, velY?: number): void;
-    setOrientation(vector: THREE.Vector3, instantly?: boolean): void;
+    setOrientation(vector: Vector3, instantly?: boolean): void;
     resetOrientation(): void;
     setBehaviour(behaviour: ICharacterAI): void;
     setPhysicsEnabled(value: boolean): void;
@@ -89,13 +89,13 @@ export declare class Character extends THREE.Object3D implements IWorldEntity {
     setAnimation(clipName: string, fadeIn: number): number;
     springMovement(timeStep: number): void;
     springRotation(timeStep: number): void;
-    getLocalMovementDirection(): THREE.Vector3;
-    getCameraRelativeMovementVector(): THREE.Vector3;
+    getLocalMovementDirection(): Vector3;
+    getCameraRelativeMovementVector(): Vector3;
     setCameraRelativeOrientationTarget(): void;
     rotateModel(): void;
     jump(initJumpSpeed?: number): void;
     findVehicleToEnter(wantsToDrive: boolean): void;
-    enterVehicle(seat: VehicleSeat, entryPoint: THREE.Object3D): void;
+    enterVehicle(seat: VehicleSeat, entryPoint: Object3D): void;
     teleportToVehicle(vehicle: Vehicle, seat: VehicleSeat): void;
     startControllingVehicle(vehicle: IControllable, seat: VehicleSeat): void;
     transferControls(entity: IControllable): void;
