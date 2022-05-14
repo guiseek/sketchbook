@@ -1,18 +1,25 @@
-import * as THREE from 'three'
+import { SimulationFrame } from '../physics/spring_simulation/simulation-frame'
+import { Space } from '../enums/space'
+import { Side } from '../enums/side'
 import * as CANNON from 'cannon'
 import * as _ from 'lodash'
-import { SimulationFrame } from '../physics/spring_simulation/simulation-frame'
-import { World } from '../world/World'
-import { Side } from '../enums/side'
-import { Object3D } from 'three'
-import { Space } from '../enums/space'
+import {
+  MeshPhongMaterial,
+  Object3D,
+  Geometry,
+  Quaternion,
+  Vector3,
+  Vector4,
+  Matrix4,
+  Face3,
+} from 'three'
 
 export function createCapsuleGeometry(
   radius: number = 1,
   height: number = 2,
   N: number = 32
-): THREE.Geometry {
-  const geometry = new THREE.Geometry()
+): Geometry {
+  const geometry = new Geometry()
   const TWOPI = Math.PI * 2
   const PID2 = 1.570796326794896619231322
 
@@ -23,8 +30,8 @@ export function createCapsuleGeometry(
     for (let j = 0; j <= N; j++) {
       let theta = (j * TWOPI) / N
       let phi = -PID2 + (Math.PI * i) / (N / 2)
-      let vertex = new THREE.Vector3()
-      let normal = new THREE.Vector3()
+      let vertex = new Vector3()
+      let normal = new Vector3()
       vertex.x = radius * Math.cos(phi) * Math.cos(theta)
       vertex.y = radius * Math.cos(phi) * Math.sin(theta)
       vertex.z = radius * Math.sin(phi)
@@ -42,8 +49,8 @@ export function createCapsuleGeometry(
     for (let j = 0; j <= N; j++) {
       let theta = (j * TWOPI) / N
       let phi = -PID2 + (Math.PI * i) / (N / 2)
-      let vertex = new THREE.Vector3()
-      let normal = new THREE.Vector3()
+      let vertex = new Vector3()
+      let normal = new Vector3()
       vertex.x = radius * Math.cos(phi) * Math.cos(theta)
       vertex.y = radius * Math.cos(phi) * Math.sin(theta)
       vertex.z = radius * Math.sin(phi)
@@ -58,7 +65,7 @@ export function createCapsuleGeometry(
 
   for (let i = 0; i <= N / 2; i++) {
     for (let j = 0; j < N; j++) {
-      let vec = new THREE.Vector4(
+      let vec = new Vector4(
         i * (N + 1) + j,
         i * (N + 1) + (j + 1),
         (i + 1) * (N + 1) + (j + 1),
@@ -66,13 +73,13 @@ export function createCapsuleGeometry(
       )
 
       if (i === N / 4) {
-        let face1 = new THREE.Face3(vec.x, vec.y, vec.z, [
+        let face1 = new Face3(vec.x, vec.y, vec.z, [
           normals[vec.x],
           normals[vec.y],
           normals[vec.z],
         ])
 
-        let face2 = new THREE.Face3(vec.x, vec.z, vec.w, [
+        let face2 = new Face3(vec.x, vec.z, vec.w, [
           normals[vec.x],
           normals[vec.z],
           normals[vec.w],
@@ -81,13 +88,13 @@ export function createCapsuleGeometry(
         geometry.faces.push(face2)
         geometry.faces.push(face1)
       } else {
-        let face1 = new THREE.Face3(vec.x, vec.y, vec.z, [
+        let face1 = new Face3(vec.x, vec.y, vec.z, [
           normals[vec.x],
           normals[vec.y],
           normals[vec.z],
         ])
 
-        let face2 = new THREE.Face3(vec.x, vec.z, vec.w, [
+        let face2 = new Face3(vec.x, vec.z, vec.w, [
           normals[vec.x],
           normals[vec.z],
           normals[vec.w],
@@ -118,22 +125,16 @@ export function createCapsuleGeometry(
  * @param {Vector3} a Vector to construct 2D matrix from
  * @param {Vector3} b Vector to apply basis to
  */
-export function appplyVectorMatrixXZ(
-  a: THREE.Vector3,
-  b: THREE.Vector3
-): THREE.Vector3 {
-  return new THREE.Vector3(a.x * b.z + a.z * b.x, b.y, a.z * b.z + -a.x * b.x)
+export function appplyVectorMatrixXZ(a: Vector3, b: Vector3): Vector3 {
+  return new Vector3(a.x * b.z + a.z * b.x, b.y, a.z * b.z + -a.x * b.x)
 }
 
 export function round(value: number, decimals: number = 0): number {
   return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals)
 }
 
-export function roundVector(
-  vector: THREE.Vector3,
-  decimals: number = 0
-): THREE.Vector3 {
-  return new THREE.Vector3(
+export function roundVector(vector: Vector3, decimals: number = 0): Vector3 {
+  return new Vector3(
     this.round(vector.x, decimals),
     this.round(vector.y, decimals),
     this.round(vector.z, decimals)
@@ -142,12 +143,12 @@ export function roundVector(
 
 /**
  * Finds an angle between two vectors
- * @param {THREE.Vector3} v1
- * @param {THREE.Vector3} v2
+ * @param {Vector3} v1
+ * @param {Vector3} v2
  */
 export function getAngleBetweenVectors(
-  v1: THREE.Vector3,
-  v2: THREE.Vector3,
+  v1: Vector3,
+  v2: Vector3,
   dotTreshold: number = 0.0005
 ): number {
   let angle: number
@@ -173,15 +174,15 @@ export function getAngleBetweenVectors(
  * Finds an angle between two vectors with a sign relative to normal vector
  */
 export function getSignedAngleBetweenVectors(
-  v1: THREE.Vector3,
-  v2: THREE.Vector3,
-  normal: THREE.Vector3 = new THREE.Vector3(0, 1, 0),
+  v1: Vector3,
+  v2: Vector3,
+  normal: Vector3 = new Vector3(0, 1, 0),
   dotTreshold: number = 0.0005
 ): number {
   let angle = this.getAngleBetweenVectors(v1, v2, dotTreshold)
 
   // Get vector pointing up or down
-  let cross = new THREE.Vector3().crossVectors(v1, v2)
+  let cross = new Vector3().crossVectors(v1, v2)
   // Compare cross with normal to find out direction
   if (normal.dot(cross) < 0) {
     angle = -angle
@@ -236,32 +237,32 @@ export function spring(
 }
 
 export function springV(
-  source: THREE.Vector3,
-  dest: THREE.Vector3,
-  velocity: THREE.Vector3,
+  source: Vector3,
+  dest: Vector3,
+  velocity: Vector3,
   mass: number,
   damping: number
 ): void {
-  let acceleration = new THREE.Vector3().subVectors(dest, source)
+  let acceleration = new Vector3().subVectors(dest, source)
   acceleration.divideScalar(mass)
   velocity.add(acceleration)
   velocity.multiplyScalar(damping)
   source.add(velocity)
 }
 
-export function threeVector(vec: CANNON.Vec3): THREE.Vector3 {
-  return new THREE.Vector3(vec.x, vec.y, vec.z)
+export function threeVector(vec: CANNON.Vec3): Vector3 {
+  return new Vector3(vec.x, vec.y, vec.z)
 }
 
-export function cannonVector(vec: THREE.Vector3): CANNON.Vec3 {
+export function cannonVector(vec: Vector3): CANNON.Vec3 {
   return new CANNON.Vec3(vec.x, vec.y, vec.z)
 }
 
-export function threeQuat(quat: CANNON.Quaternion): THREE.Quaternion {
-  return new THREE.Quaternion(quat.x, quat.y, quat.z, quat.w)
+export function threeQuat(quat: CANNON.Quaternion): Quaternion {
+  return new Quaternion(quat.x, quat.y, quat.z, quat.w)
 }
 
-export function cannonQuat(quat: THREE.Quaternion): CANNON.Quaternion {
+export function cannonQuat(quat: Quaternion): CANNON.Quaternion {
   return new CANNON.Quaternion(quat.x, quat.y, quat.z, quat.w)
 }
 
@@ -270,7 +271,7 @@ export function setupMeshProperties(child: any): void {
   child.receiveShadow = true
 
   if (child.material.map !== null) {
-    let mat = new THREE.MeshPhongMaterial()
+    let mat = new MeshPhongMaterial()
     mat.shininess = 0
     mat.name = child.material.name
     mat.map = child.material.map
@@ -298,55 +299,38 @@ export function easeOutQuad(x: number): number {
   return 1 - (1 - x) * (1 - x)
 }
 
-export function getRight(
-  obj: THREE.Object3D,
-  space: Space = Space.Global
-): THREE.Vector3 {
+export function getRight(obj: Object3D, space: Space = Space.Global): Vector3 {
   const matrix = getMatrix(obj, space)
-  return new THREE.Vector3(
-    matrix.elements[0],
-    matrix.elements[1],
-    matrix.elements[2]
-  )
+  return new Vector3(matrix.elements[0], matrix.elements[1], matrix.elements[2])
 }
 
-export function getUp(
-  obj: THREE.Object3D,
-  space: Space = Space.Global
-): THREE.Vector3 {
+export function getUp(obj: Object3D, space: Space = Space.Global): Vector3 {
   const matrix = getMatrix(obj, space)
-  return new THREE.Vector3(
-    matrix.elements[4],
-    matrix.elements[5],
-    matrix.elements[6]
-  )
+  return new Vector3(matrix.elements[4], matrix.elements[5], matrix.elements[6])
 }
 
 export function getForward(
-  obj: THREE.Object3D,
+  obj: Object3D,
   space: Space = Space.Global
-): THREE.Vector3 {
+): Vector3 {
   const matrix = getMatrix(obj, space)
-  return new THREE.Vector3(
+  return new Vector3(
     matrix.elements[8],
     matrix.elements[9],
     matrix.elements[10]
   )
 }
 
-export function getBack(
-  obj: THREE.Object3D,
-  space: Space = Space.Global
-): THREE.Vector3 {
+export function getBack(obj: Object3D, space: Space = Space.Global): Vector3 {
   const matrix = getMatrix(obj, space)
-  return new THREE.Vector3(
+  return new Vector3(
     -matrix.elements[8],
     -matrix.elements[9],
     -matrix.elements[10]
   )
 }
 
-export function getMatrix(obj: THREE.Object3D, space: Space): THREE.Matrix4 {
+export function getMatrix(obj: Object3D, space: Space): Matrix4 {
   switch (space) {
     case Space.Local:
       return obj.matrix

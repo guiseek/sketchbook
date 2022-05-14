@@ -1,23 +1,23 @@
-import * as THREE from 'three'
-import * as Utils from './function-library'
-import { World } from '../world/World'
 import { IInputReceiver } from '../interfaces/iinput-receiver'
-import { KeyBinding } from './key-binding'
-import { Character } from '../characters/character'
-import _ = require('lodash')
+import { MathUtils, Camera, Vector2, Vector3 } from 'three'
 import { IUpdatable } from '../interfaces/iupdatable'
+import { Character } from '../characters/character'
+import * as Utils from './function-library'
+import { KeyBinding } from './key-binding'
+import { World } from '../world/World'
+import _ = require('lodash')
 
 export class CameraOperator implements IInputReceiver, IUpdatable {
   public updateOrder: number = 4
 
   public world: World
-  public camera: THREE.Camera
-  public target: THREE.Vector3
-  public sensitivity: THREE.Vector2
+  public camera: Camera
+  public target: Vector3
+  public sensitivity: Vector2
   public radius: number = 1
   public theta: number
   public phi: number
-  public onMouseDownPosition: THREE.Vector2
+  public onMouseDownPosition: Vector2
   public onMouseDownTheta: any
   public onMouseDownPhi: any
   public targetRadius: number = 1
@@ -35,21 +35,21 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
 
   constructor(
     world: World,
-    camera: THREE.Camera,
+    camera: Camera,
     sensitivityX: number = 1,
     sensitivityY: number = sensitivityX * 0.8
   ) {
     this.world = world
     this.camera = camera
-    this.target = new THREE.Vector3()
-    this.sensitivity = new THREE.Vector2(sensitivityX, sensitivityY)
+    this.target = new Vector3()
+    this.sensitivity = new Vector2(sensitivityX, sensitivityY)
 
     this.movementSpeed = 0.06
     this.radius = 3
     this.theta = 0
     this.phi = 0
 
-    this.onMouseDownPosition = new THREE.Vector2()
+    this.onMouseDownPosition = new Vector2()
     this.onMouseDownTheta = this.theta
     this.onMouseDownPhi = this.phi
 
@@ -70,7 +70,7 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
     sensitivityX: number,
     sensitivityY: number = sensitivityX
   ): void {
-    this.sensitivity = new THREE.Vector2(sensitivityX, sensitivityY)
+    this.sensitivity = new Vector2(sensitivityX, sensitivityY)
   }
 
   public setRadius(value: number, instantly: boolean = false): void {
@@ -89,7 +89,7 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
 
   public update(timeScale: number): void {
     if (this.followMode === true) {
-      this.camera.position.y = THREE.MathUtils.clamp(
+      this.camera.position.y = MathUtils.clamp(
         this.camera.position.y,
         this.target.y,
         Number.POSITIVE_INFINITY
@@ -98,7 +98,7 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
       let newPos = this.target
         .clone()
         .add(
-          new THREE.Vector3()
+          new Vector3()
             .subVectors(this.camera.position, this.target)
             .normalize()
             .multiplyScalar(this.targetRadius)
@@ -107,7 +107,7 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
       this.camera.position.y = newPos.y
       this.camera.position.z = newPos.z
     } else {
-      this.radius = THREE.MathUtils.lerp(this.radius, this.targetRadius, 0.1)
+      this.radius = MathUtils.lerp(this.radius, this.targetRadius, 0.1)
 
       this.camera.position.x =
         this.target.x +
@@ -186,19 +186,19 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
     this.world.updateControls([
       {
         keys: ['W', 'S', 'A', 'D'],
-        desc: 'Move around',
+        desc: 'Mover-se',
       },
       {
         keys: ['E', 'Q'],
-        desc: 'Move up / down',
+        desc: 'Mover para cima / baixo',
       },
       {
         keys: ['Shift'],
-        desc: 'Speed up',
+        desc: 'Acelerar',
       },
       {
         keys: ['Shift', '+', 'C'],
-        desc: 'Exit free camera mode',
+        desc: 'Sair do modo de câmera livre',
       },
     ])
   }
@@ -213,17 +213,17 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
     const right = Utils.getRight(this.camera)
     const forward = Utils.getBack(this.camera)
 
-    this.upVelocity = THREE.MathUtils.lerp(
+    this.upVelocity = MathUtils.lerp(
       this.upVelocity,
       +this.actions.up.isPressed - +this.actions.down.isPressed,
       0.3
     )
-    this.forwardVelocity = THREE.MathUtils.lerp(
+    this.forwardVelocity = MathUtils.lerp(
       this.forwardVelocity,
       +this.actions.forward.isPressed - +this.actions.back.isPressed,
       0.3
     )
-    this.rightVelocity = THREE.MathUtils.lerp(
+    this.rightVelocity = MathUtils.lerp(
       this.rightVelocity,
       +this.actions.right.isPressed - +this.actions.left.isPressed,
       0.3

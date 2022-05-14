@@ -315,31 +315,31 @@ export class Car extends Vehicle implements IControllable {
     this.world.updateControls([
       {
         keys: ['W', 'S'],
-        desc: 'Accelerate, Brake / Reverse',
+        desc: 'Acelerar, Frear / Ré',
       },
       {
         keys: ['A', 'D'],
-        desc: 'Steering',
+        desc: 'Direção',
       },
       {
         keys: ['Space'],
-        desc: 'Handbrake',
+        desc: 'Freio de mão',
       },
       {
         keys: ['V'],
-        desc: 'View select',
+        desc: 'Ver seleção',
       },
       {
         keys: ['F'],
-        desc: 'Exit vehicle',
+        desc: 'Sair do veículo',
       },
       {
         keys: ['Shift', '+', 'R'],
-        desc: 'Respawn',
+        desc: 'Começar novamente',
       },
       {
         keys: ['Shift', '+', 'C'],
-        desc: 'Free camera',
+        desc: 'Câmera livre',
       },
     ])
   }

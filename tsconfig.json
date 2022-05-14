@@ -7,6 +7,7 @@
     "declaration": true,
     "declarationDir": "build/types",
     "baseUrl": ".",
+    "strict": false,
     "paths": {
       "cannon": ["src/lib/cannon/cannon"]
     }

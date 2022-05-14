@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
 import { World } from '../world/World'
 
 export class LoadingManager {
-  public firstLoad: boolean = true
+  public firstLoad = true
   public onFinishedCallback: () => void
 
   private world: World

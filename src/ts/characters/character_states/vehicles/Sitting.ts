@@ -17,11 +17,11 @@ export class Sitting extends CharacterStateBase {
     this.character.world.updateControls([
       {
         keys: ['X'],
-        desc: 'Switch seats',
+        desc: 'Trocar de assentos',
       },
       {
         keys: ['F'],
-        desc: 'Leave seat',
+        desc: 'Sair do lugar',
       },
     ])
 

@@ -202,11 +202,11 @@ export class Helicopter extends Vehicle implements IControllable, IWorldEntity {
     this.world.updateControls([
       {
         keys: ['Shift'],
-        desc: 'Ascend',
+        desc: 'Subir',
       },
       {
         keys: ['Space'],
-        desc: 'Descend',
+        desc: 'Descer',
       },
       {
         keys: ['W', 'S'],
@@ -222,19 +222,19 @@ export class Helicopter extends Vehicle implements IControllable, IWorldEntity {
       },
       {
         keys: ['V'],
-        desc: 'View select',
+        desc: 'Ver seleção',
       },
       {
         keys: ['F'],
-        desc: 'Exit vehicle',
+        desc: 'Sair do helicóptero',
       },
       {
         keys: ['Shift', '+', 'R'],
-        desc: 'Respawn',
+        desc: 'Começar novamente',
       },
       {
         keys: ['Shift', '+', 'C'],
-        desc: 'Free camera',
+        desc: 'Câmera livre',
       },
     ])
   }

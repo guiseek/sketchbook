@@ -383,15 +383,15 @@ export class Airplane extends Vehicle implements IControllable, IWorldEntity {
     this.world.updateControls([
       {
         keys: ['Shift'],
-        desc: 'Accelerate',
+        desc: 'Acelerar',
       },
       {
         keys: ['Space'],
-        desc: 'Decelerate',
+        desc: 'Desacelerar',
       },
       {
         keys: ['W', 'S'],
-        desc: 'Elevators',
+        desc: 'Elevadores',
       },
       {
         keys: ['A', 'D'],
@@ -399,27 +399,27 @@ export class Airplane extends Vehicle implements IControllable, IWorldEntity {
       },
       {
         keys: ['Q', 'E'],
-        desc: 'Rudder / Steering',
+        desc: 'Leme / Direção',
       },
       {
         keys: ['B'],
-        desc: 'Brake',
+        desc: 'Freio',
       },
       {
         keys: ['V'],
-        desc: 'View select',
+        desc: 'Ver seleção',
       },
       {
         keys: ['F'],
-        desc: 'Exit vehicle',
+        desc: 'Sair do avião',
       },
       {
         keys: ['Shift', '+', 'R'],
-        desc: 'Respawn',
+        desc: 'Começar novamente',
       },
       {
         keys: ['Shift', '+', 'C'],
-        desc: 'Free camera',
+        desc: 'Câmera livre',
       },
     ])
   }
