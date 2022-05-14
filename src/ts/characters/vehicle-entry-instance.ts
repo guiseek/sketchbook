@@ -1,27 +1,25 @@
-import * as THREE from 'three'
 import { VehicleSeat } from '../vehicles/vehicle-seat'
+import { Object3D, Vector3 } from 'three'
 import { Character } from './character'
 
 export class VehicleEntryInstance {
-  public character: Character
-  public targetSeat: VehicleSeat
-  public entryPoint: THREE.Object3D
-  public wantsToDrive: boolean = false
+  targetSeat: VehicleSeat
+  entryPoint: Object3D
+  wantsToDrive = false
 
-  constructor(character: Character) {
-    this.character = character
-  }
+  constructor(public character: Character) {}
 
-  public update(timeStep: number): void {
-    let entryPointWorldPos = new THREE.Vector3()
+  update(timeStep?: number): void
+  update(timeStep: number) {
+    const entryPointWorldPos = new Vector3()
     this.entryPoint.getWorldPosition(entryPointWorldPos)
-    let viewVector = new THREE.Vector3().subVectors(
+    const viewVector = new Vector3().subVectors(
       entryPointWorldPos,
       this.character.position
     )
     this.character.setOrientation(viewVector)
 
-    let heightDifference = viewVector.y
+    const heightDifference = viewVector.y
     viewVector.y = 0
     if (
       this.character.charState.canEnterVehicles &&

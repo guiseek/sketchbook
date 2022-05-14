@@ -1,36 +1,39 @@
-import * as THREE from 'three'
+import { IControllable } from '../../interfaces/icontrollable'
 import { ICharacterAI } from '../../interfaces/icharacter-ai'
 import * as Utils from '../../core/function-library'
 import { Vehicle } from '../../vehicles/vehicle'
 import { Character } from '../character'
-import { Car } from '../../vehicles/car'
-import { EntityType } from '../../enums/entity-type'
+import { Object3D, Vector3 } from 'three'
 
 export class FollowTarget implements ICharacterAI {
-  public character: Character
-  public isTargetReached: boolean
+  character: Character
+  isTargetReached: boolean
 
-  public target: THREE.Object3D
+  target: Object3D
   private stopDistance: number
 
-  constructor(target: THREE.Object3D, stopDistance: number = 1.3) {
+  constructor(target: Object3D, stopDistance: number = 1.3) {
     this.target = target
     this.stopDistance = stopDistance
   }
 
-  public setTarget(target: THREE.Object3D): void {
+  getControlledAs<T extends IControllable>() {
+    return this.character.controlledObject as T
+  }
+
+  setTarget(target: Object3D): void {
     this.target = target
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number): void {
     if (this.character.controlledObject !== undefined) {
-      let source = new THREE.Vector3()
-      let target = new THREE.Vector3()
+      const source = new Vector3()
+      const target = new Vector3()
 
       this.character.getWorldPosition(source)
       this.target.getWorldPosition(target)
 
-      let viewVector = new THREE.Vector3().subVectors(target, source)
+      const viewVector = new Vector3().subVectors(target, source)
 
       // Follow character
       if (viewVector.length() > this.stopDistance) {
@@ -39,22 +42,21 @@ export class FollowTarget implements ICharacterAI {
         this.isTargetReached = true
       }
 
-      let forward = new THREE.Vector3(0, 0, 1).applyQuaternion(
-        (this.character.controlledObject as unknown as THREE.Object3D)
-          .quaternion
+      const forward = new Vector3(0, 0, 1).applyQuaternion(
+        (this.character.controlledObject as unknown as Object3D).quaternion
       )
       viewVector.y = 0
       viewVector.normalize()
-      let angle = Utils.getSignedAngleBetweenVectors(forward, viewVector)
+      const angle = Utils.getSignedAngleBetweenVectors(forward, viewVector)
 
-      let goingForward =
+      const goingForward =
         forward.dot(
           Utils.threeVector(
             (this.character.controlledObject as unknown as Vehicle).collision
               .velocity
           )
         ) > 0
-      let speed = (
+      const speed = (
         this.character.controlledObject as unknown as Vehicle
       ).collision.velocity.length()
 
@@ -89,7 +91,7 @@ export class FollowTarget implements ICharacterAI {
         this.character.controlledObject.triggerAction('right', false)
       }
     } else {
-      let viewVector = new THREE.Vector3().subVectors(
+      let viewVector = new Vector3().subVectors(
         this.target.position,
         this.character.position
       )

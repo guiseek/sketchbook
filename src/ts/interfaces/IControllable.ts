@@ -1,12 +1,13 @@
+import { VehicleSeat } from '../vehicles/vehicle-seat'
 import { Character } from '../characters/character'
 import { IInputReceiver } from './iinput-receiver'
-import { VehicleSeat } from '../vehicles/vehicle-seat'
 import { EntityType } from '../enums/entity-type'
+import { Vector3, Object3D } from 'three'
 
-export interface IControllable extends IInputReceiver {
+export interface IControllable extends IInputReceiver, Object3D {
   entityType: EntityType
   seats: VehicleSeat[]
-  position: THREE.Vector3
+  position: Vector3
   controllingCharacter: Character
 
   triggerAction(actionName: string, value: boolean): void

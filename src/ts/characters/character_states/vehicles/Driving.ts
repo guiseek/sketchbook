@@ -1,7 +1,7 @@
+import { CloseVehicleDoorInside } from './close-vehicle-door-inside'
+import { VehicleSeat } from 'src/ts/vehicles/vehicle-seat'
 import { CharacterStateBase } from '../_stateLibrary'
 import { Character } from '../../character'
-import { VehicleSeat } from 'src/ts/vehicles/vehicle-seat'
-import { CloseVehicleDoorInside } from './close-vehicle-door-inside'
 
 export class Driving extends CharacterStateBase {
   private seat: VehicleSeat

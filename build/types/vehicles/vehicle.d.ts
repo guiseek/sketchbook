@@ -1,14 +1,15 @@
-import { Character } from '../characters/character';
-import * as THREE from 'three';
-import * as CANNON from 'cannon';
-import { World } from '../world/World';
-import { KeyBinding } from '../core/key-binding';
-import { VehicleSeat } from './vehicle-seat';
-import { Wheel } from './wheel';
-import { EntityType } from '../enums/entity-type';
+import { IControllable } from '../interfaces/icontrollable';
 import { IWorldEntity } from '../interfaces/iworld-entity';
 import { VehicleAction } from '../types/vehicle-action';
-export declare abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
+import { Character } from '../characters/character';
+import { KeyBinding } from '../core/key-binding';
+import { EntityType } from '../enums/entity-type';
+import { VehicleSeat } from './vehicle-seat';
+import { World } from '../world/World';
+import * as CANNON from 'cannon';
+import { Wheel } from './wheel';
+import { Object3D, AxesHelper, Material } from 'three';
+export declare abstract class Vehicle extends Object3D implements IWorldEntity, IControllable {
     updateOrder: number;
     abstract entityType: EntityType;
     controllingCharacter: Character;
@@ -19,10 +20,10 @@ export declare abstract class Vehicle extends THREE.Object3D implements IWorldEn
     drive: string;
     camera: any;
     world: World;
-    help: THREE.AxesHelper;
+    help: AxesHelper;
     collision: CANNON.Body;
-    materials: THREE.Material[];
-    spawnPoint: THREE.Object3D;
+    materials: Material[];
+    spawnPoint: Object3D;
     private modelContainer;
     private firstPerson;
     constructor(gltf: any, handlingSetup?: any);

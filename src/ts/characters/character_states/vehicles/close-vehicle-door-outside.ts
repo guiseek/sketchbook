@@ -1,15 +1,14 @@
+import { VehicleSeat } from '../../../vehicles/vehicle-seat'
+import * as Utils from '../../../core/function-library'
 import { CharacterStateBase } from '../_stateLibrary'
 import { Character } from '../../character'
-import { VehicleSeat } from '../../../vehicles/vehicle-seat'
 import { Side } from '../../../enums/side'
 import { Idle } from '../idle'
-import * as Utils from '../../../core/function-library'
 
 export class CloseVehicleDoorOutside extends CharacterStateBase {
-  private seat: VehicleSeat
   private hasClosedDoor: boolean = false
 
-  constructor(character: Character, seat: VehicleSeat) {
+  constructor(character: Character, public seat: VehicleSeat) {
     super(character)
 
     this.seat = seat

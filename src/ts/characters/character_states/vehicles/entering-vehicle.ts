@@ -1,27 +1,26 @@
-import * as THREE from 'three'
-import { CharacterStateBase } from '../_stateLibrary'
-import { Character } from '../../character'
+import { SpringSimulator } from '../../../physics/spring_simulation/spring-simulator'
 import { IControllable } from '../../../interfaces/icontrollable'
-import { Driving } from './driving'
 import { VehicleSeat } from '../../../vehicles/vehicle-seat'
+import * as Utils from '../../../core/function-library'
+import { EntityType } from '../../../enums/entity-type'
+import { CharacterStateBase } from '../_stateLibrary'
+import { SeatType } from '../../../enums/seat-type'
+import { Character } from '../../character'
 import { Side } from '../../../enums/side'
 import { Sitting } from './sitting'
-import { SeatType } from '../../../enums/seat-type'
-import { EntityType } from '../../../enums/entity-type'
-import { Object3D } from 'three'
-import * as Utils from '../../../core/function-library'
-import { SpringSimulator } from '../../../physics/spring_simulation/spring-simulator'
+import { Driving } from './driving'
+import { Object3D, Vector3, Quaternion, MathUtils } from 'three'
 
 export class EnteringVehicle extends CharacterStateBase {
   private vehicle: IControllable
   private animData: any
   private seat: VehicleSeat
 
-  private initialPositionOffset: THREE.Vector3 = new THREE.Vector3()
-  private startPosition: THREE.Vector3 = new THREE.Vector3()
-  private endPosition: THREE.Vector3 = new THREE.Vector3()
-  private startRotation: THREE.Quaternion = new THREE.Quaternion()
-  private endRotation: THREE.Quaternion = new THREE.Quaternion()
+  private initialPositionOffset = new Vector3()
+  private startPosition = new Vector3()
+  private endPosition = new Vector3()
+  private startRotation = new Quaternion()
+  private endRotation = new Quaternion()
 
   private factorSimulator: SpringSimulator
 
@@ -39,7 +38,9 @@ export class EnteringVehicle extends CharacterStateBase {
     this.character.resetVelocity()
     this.character.tiltContainer.rotation.z = 0
     this.character.setPhysicsEnabled(false)
-    ;(this.seat.vehicle as unknown as THREE.Object3D).attach(this.character)
+
+    const vehicle = this.seat.vehicle as unknown as Object3D
+    vehicle.attach(this.character)
 
     this.startPosition.copy(entryPoint.position)
     this.startPosition.y += 0.53
@@ -56,7 +57,7 @@ export class EnteringVehicle extends CharacterStateBase {
     this.factorSimulator.target = 1
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number): void {
     super.update(timeStep)
 
     if (this.animationEnded(timeStep)) {
@@ -79,27 +80,27 @@ export class EnteringVehicle extends CharacterStateBase {
         this.seat.door.rotation = 1
       }
 
-      let factor = THREE.MathUtils.clamp(
+      const factor = MathUtils.clamp(
         this.timer / (this.animationLength - this.animData.end_early),
         0,
         1
       )
-      let sineFactor = Utils.easeInOutSine(factor)
+      const sineFactor = Utils.easeInOutSine(factor)
       this.factorSimulator.simulate(timeStep)
 
-      let currentPosOffset = new THREE.Vector3().lerpVectors(
+      const currentPosOffset = new Vector3().lerpVectors(
         this.initialPositionOffset,
-        new THREE.Vector3(),
+        new Vector3(),
         this.factorSimulator.position
       )
-      let lerpPosition = new THREE.Vector3().lerpVectors(
+      const lerpPosition = new Vector3().lerpVectors(
         this.startPosition.clone().sub(currentPosOffset),
         this.endPosition,
         sineFactor
       )
       this.character.setPosition(lerpPosition.x, lerpPosition.y, lerpPosition.z)
 
-      THREE.Quaternion.slerp(
+      Quaternion.slerp(
         this.startRotation,
         this.endRotation,
         this.character.quaternion,

@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import { Vector3 } from 'three';
 export declare class GroundImpactData {
-    velocity: THREE.Vector3;
+    velocity: Vector3;
 }

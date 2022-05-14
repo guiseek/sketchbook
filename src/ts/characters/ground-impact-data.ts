@@ -1,5 +1,5 @@
-import * as THREE from 'three'
+import { Vector3 } from 'three'
 
 export class GroundImpactData {
-  public velocity: THREE.Vector3 = new THREE.Vector3()
+  velocity: Vector3 = new Vector3()
 }

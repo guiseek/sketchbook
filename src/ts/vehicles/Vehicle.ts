@@ -1,38 +1,43 @@
-import { Character } from '../characters/character'
-import * as THREE from 'three'
-import * as CANNON from 'cannon'
-import { World } from '../world/World'
-import _ = require('lodash')
-import { KeyBinding } from '../core/key-binding'
-import { VehicleSeat } from './vehicle-seat'
-import { Wheel } from './wheel'
-import { VehicleDoor } from './vehicle-door'
-import * as Utils from '../core/function-library'
-import { CollisionGroups } from '../enums/collision-groups'
 import { SwitchingSeats } from '../characters/character_states/vehicles/switching-seats'
-import { EntityType } from '../enums/entity-type'
+import { IControllable } from '../interfaces/icontrollable'
+import { CollisionGroups } from '../enums/collision-groups'
 import { IWorldEntity } from '../interfaces/iworld-entity'
 import { VehicleAction } from '../types/vehicle-action'
+import { Character } from '../characters/character'
+import { KeyBinding } from '../core/key-binding'
+import * as Utils from '../core/function-library'
+import { EntityType } from '../enums/entity-type'
+import { VehicleSeat } from './vehicle-seat'
+import { World } from '../world/World'
+import * as CANNON from 'cannon'
+import { Wheel } from './wheel'
+import * as _ from 'lodash'
+import { Object3D, AxesHelper, Material, Group, Vector3 } from 'three'
+// import * as THREE from 'three'
 
-export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
-  public updateOrder: number = 2
-  public abstract entityType: EntityType
+export abstract class Vehicle
+  extends Object3D
+  implements IWorldEntity, IControllable
+{
+  updateOrder = 2
+  abstract entityType: EntityType
 
-  public controllingCharacter: Character
-  public abstract actions: Record<VehicleAction, KeyBinding>
-  public rayCastVehicle: CANNON.RaycastVehicle
-  public seats: VehicleSeat[] = []
-  public wheels: Wheel[] = []
-  public drive: string
-  public camera: any
-  public world: World
-  public help: THREE.AxesHelper
-  public collision: CANNON.Body
-  public materials: THREE.Material[] = []
-  public spawnPoint: THREE.Object3D
-  private modelContainer: THREE.Group
+  controllingCharacter: Character
+  abstract actions: Record<VehicleAction, KeyBinding>
 
-  private firstPerson: boolean = false
+  rayCastVehicle: CANNON.RaycastVehicle
+  seats: VehicleSeat[] = []
+  wheels: Wheel[] = []
+  drive: string
+  camera: any
+  world: World
+  help: AxesHelper
+  collision: CANNON.Body
+  materials: Material[] = []
+  spawnPoint: Object3D
+  private modelContainer: Group
+
+  private firstPerson = false
 
   constructor(gltf: any, handlingSetup?: any) {
     super()
@@ -53,7 +58,7 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     // Read GLTF
     this.readVehicleData(gltf)
 
-    this.modelContainer = new THREE.Group()
+    this.modelContainer = new Group()
     this.add(this.modelContainer)
     this.modelContainer.add(gltf.scene)
     // this.setModel(gltf.scene);
@@ -76,14 +81,14 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
       wheel.rayCastWheelInfoIndex = index
     })
 
-    this.help = new THREE.AxesHelper(2)
+    this.help = new AxesHelper(2)
   }
 
-  public noDirectionPressed(): boolean {
+  noDirectionPressed(): boolean {
     return true
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number): void {
     this.position.set(
       this.collision.interpolatedPosition.x,
       this.collision.interpolatedPosition.y,
@@ -119,12 +124,12 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     this.updateMatrixWorld()
   }
 
-  public forceCharacterOut(): void {
+  forceCharacterOut(): void {
     this.controllingCharacter.modelContainer.visible = true
     this.controllingCharacter.exitVehicle()
   }
 
-  public onInputChange(): void {
+  onInputChange(): void {
     if (
       this.actions.seat_switch.justPressed &&
       this.controllingCharacter?.occupyingSeat?.connectedSeats.length > 0
@@ -141,7 +146,7 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     }
   }
 
-  public resetControls(): void {
+  resetControls(): void {
     for (const action in this.actions) {
       if (this.actions.hasOwnProperty(action)) {
         this.triggerAction(action, false)
@@ -149,7 +154,7 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     }
   }
 
-  public allowSleep(value: boolean): void {
+  allowSleep(value: boolean): void {
     this.collision.allowSleep = value
 
     if (value === false) {
@@ -157,7 +162,7 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     }
   }
 
-  public handleKeyboardEvent(
+  handleKeyboardEvent(
     event: KeyboardEvent,
     code: string,
     pressed: boolean
@@ -182,7 +187,7 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     }
   }
 
-  public setFirstPersonView(value: boolean): void {
+  setFirstPersonView(value: boolean): void {
     this.firstPerson = value
     if (this.controllingCharacter !== undefined)
       this.controllingCharacter.modelContainer.visible = !value
@@ -194,11 +199,11 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     }
   }
 
-  public toggleFirstPersonView(): void {
+  toggleFirstPersonView(): void {
     this.setFirstPersonView(!this.firstPerson)
   }
 
-  public triggerAction(actionName: string, value: boolean): void {
+  triggerAction(actionName: string, value: boolean): void {
     // Get action and set it's parameters
     let action = this.actions[actionName]
 
@@ -222,32 +227,24 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     }
   }
 
-  public handleMouseButton(
-    event: MouseEvent,
-    code: string,
-    pressed: boolean
-  ): void {
+  handleMouseButton(event: MouseEvent, code: string, pressed: boolean): void {
     return
   }
 
-  public handleMouseMove(
-    event: MouseEvent,
-    deltaX: number,
-    deltaY: number
-  ): void {
+  handleMouseMove(event: MouseEvent, deltaX: number, deltaY: number): void {
     this.world.cameraOperator.move(deltaX, deltaY)
   }
 
-  public handleMouseWheel(event: WheelEvent, value: number): void {
+  handleMouseWheel(event: WheelEvent, value: number): void {
     this.world.scrollTheTimeScale(value)
   }
 
-  public inputReceiverInit(): void {
+  inputReceiverInit(): void {
     this.collision.allowSleep = false
     this.setFirstPersonView(false)
   }
 
-  public inputReceiverUpdate(timeStep: number): void {
+  inputReceiverUpdate(timeStep: number): void {
     if (this.firstPerson) {
       // this.world.cameraOperator.target.set(
       //     this.position.x + this.camera.position.x,
@@ -255,7 +252,7 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
       //     this.position.z + this.camera.position.z
       // );
 
-      let temp = new THREE.Vector3().copy(this.camera.position)
+      const temp = new Vector3().copy(this.camera.position)
       temp.applyQuaternion(this.quaternion)
       this.world.cameraOperator.target.copy(temp.add(this.position))
     } else {
@@ -268,20 +265,20 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     }
   }
 
-  public setPosition(x: number, y: number, z: number): void {
+  setPosition(x: number, y: number, z: number): void {
     this.collision.position.x = x
     this.collision.position.y = y
     this.collision.position.z = z
   }
 
-  public setSteeringValue(val: number): void {
+  setSteeringValue(val: number): void {
     this.wheels.forEach((wheel) => {
       if (wheel.steering)
         this.rayCastVehicle.setSteeringValue(val, wheel.rayCastWheelInfoIndex)
     })
   }
 
-  public applyEngineForce(force: number): void {
+  applyEngineForce(force: number): void {
     this.wheels.forEach((wheel) => {
       if (this.drive === wheel.drive || this.drive === 'awd') {
         this.rayCastVehicle.applyEngineForce(force, wheel.rayCastWheelInfoIndex)
@@ -289,7 +286,7 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     })
   }
 
-  public setBrake(brakeForce: number, driveFilter?: string): void {
+  setBrake(brakeForce: number, driveFilter?: string): void {
     this.wheels.forEach((wheel) => {
       if (driveFilter === undefined || driveFilter === wheel.drive) {
         this.rayCastVehicle.setBrake(brakeForce, wheel.rayCastWheelInfoIndex)
@@ -297,7 +294,7 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     })
   }
 
-  public addToWorld(world: World): void {
+  addToWorld(world: World): void {
     if (_.includes(world.vehicles, this)) {
       console.warn('Adding character to a world in which it already exists.')
     } else if (this.rayCastVehicle === undefined) {
@@ -319,7 +316,7 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     }
   }
 
-  public removeFromWorld(world: World): void {
+  removeFromWorld(world: World): void {
     if (!_.includes(world.vehicles, this)) {
       console.warn("Removing character from a world in which it isn't present.")
     } else {
@@ -335,7 +332,7 @@ export abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     }
   }
 
-  public readVehicleData(gltf: any): void {
+  readVehicleData(gltf: any): void {
     gltf.scene.traverse((child) => {
       if (child.isMesh) {
         Utils.setupMeshProperties(child)

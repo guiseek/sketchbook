@@ -1,43 +1,45 @@
-import * as THREE from 'three'
-import * as CANNON from 'cannon'
-import * as Utils from '../../core/function-library'
-
-import { FollowTarget } from './follow-target'
 import { ICharacterAI } from '../../interfaces/icharacter-ai'
+import * as Utils from '../../core/function-library'
 import { PathNode } from '../../world/path-node'
 import { Vehicle } from '../../vehicles/vehicle'
+import { FollowTarget } from './follow-target'
+import { Vector3 } from 'three'
+import * as CANNON from 'cannon'
 
 export class FollowPath extends FollowTarget implements ICharacterAI {
-  public nodeRadius: number
-  public reverse: boolean = false
+  reverse = false
 
-  private staleTimer: number = 0
+  private staleTimer = 0
   private targetNode: PathNode
 
-  constructor(firstNode: PathNode, nodeRadius: number) {
+  constructor(firstNode: PathNode, public nodeRadius: number) {
     super(firstNode.object, 0)
-    this.nodeRadius = nodeRadius
     this.targetNode = firstNode
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number): void {
     super.update(timeStep)
 
     // Todo only compute once in followTarget
-    let source = new THREE.Vector3()
-    let target = new THREE.Vector3()
+    const source = new Vector3()
+    const target = new Vector3()
+
     this.character.getWorldPosition(source)
     this.target.getWorldPosition(target)
-    let viewVector = new THREE.Vector3().subVectors(target, source)
+
+    const viewVector = new Vector3().subVectors(target, source)
     viewVector.y = 0
 
-    let targetToNextNode = this.targetNode.nextNode.object.position
+    const targetToNextNode = this.targetNode.nextNode.object.position
       .clone()
       .sub(this.targetNode.object.position)
+
     targetToNextNode.y = 0
     targetToNextNode.normalize()
-    let slowDownAngle = viewVector.clone().normalize().dot(targetToNextNode)
-    let speed = (
+
+    const slowDownAngle = viewVector.clone().normalize().dot(targetToNextNode)
+
+    const speed = (
       this.character.controlledObject as unknown as Vehicle
     ).collision.velocity.length()
 
@@ -49,30 +51,32 @@ export class FollowPath extends FollowTarget implements ICharacterAI {
 
     if (
       speed < 1 ||
-      (this.character.controlledObject as unknown as Vehicle).rayCastVehicle
+      (this.character.controlledObject as Vehicle).rayCastVehicle
         .numWheelsOnGround === 0
     )
       this.staleTimer += timeStep
-    else this.staleTimer = 0
+    else {
+      this.staleTimer = 0
+    }
+
     if (this.staleTimer > 5) {
-      let worldPos = new THREE.Vector3()
+      const worldPos = new Vector3()
       this.targetNode.object.getWorldPosition(worldPos)
       worldPos.y += 3
-      ;(
-        this.character.controlledObject as unknown as Vehicle
-      ).collision.position = Utils.cannonVector(worldPos)
-      ;(
-        this.character.controlledObject as unknown as Vehicle
-      ).collision.interpolatedPosition = Utils.cannonVector(worldPos)
-      ;(
-        this.character.controlledObject as unknown as Vehicle
-      ).collision.angularVelocity = new CANNON.Vec3()
-      ;(
-        this.character.controlledObject as unknown as Vehicle
-      ).collision.quaternion.copy(
-        (this.character.controlledObject as unknown as Vehicle).collision
-          .initQuaternion
+
+      this.getControlledAs<Vehicle>().collision.position =
+        Utils.cannonVector(worldPos)
+
+      this.getControlledAs<Vehicle>().collision.interpolatedPosition =
+        Utils.cannonVector(worldPos)
+
+      this.getControlledAs<Vehicle>().collision.angularVelocity =
+        new CANNON.Vec3()
+
+      this.getControlledAs<Vehicle>().collision.quaternion.copy(
+        this.getControlledAs<Vehicle>().collision.initQuaternion
       )
+
       this.staleTimer = 0
     }
 

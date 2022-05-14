@@ -1,17 +1,16 @@
-import { CharacterStateBase } from '../_stateLibrary'
-import { Character } from '../../character'
 import { VehicleSeat } from '../../../vehicles/vehicle-seat'
+import * as Utils from '../../../core/function-library'
+import { CharacterStateBase } from '../_stateLibrary'
+import { SeatType } from '../../../enums/seat-type'
+import { Character } from '../../character'
 import { Side } from '../../../enums/side'
 import { Driving } from './driving'
-import { SeatType } from '../../../enums/seat-type'
 import { Sitting } from './sitting'
-import * as Utils from '../../../core/function-library'
 
 export class CloseVehicleDoorInside extends CharacterStateBase {
-  private seat: VehicleSeat
   private hasClosedDoor: boolean = false
 
-  constructor(character: Character, seat: VehicleSeat) {
+  constructor(character: Character, public seat: VehicleSeat) {
     super(character)
 
     this.seat = seat
@@ -31,7 +30,7 @@ export class CloseVehicleDoorInside extends CharacterStateBase {
     this.seat.door?.open()
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number): void {
     super.update(timeStep)
 
     if (this.timer > 0.4 && !this.hasClosedDoor) {
