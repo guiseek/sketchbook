@@ -1,9 +1,9 @@
 import { CharacterStateBase } from '../_stateLibrary'
 import { Character } from '../../character'
 import { VehicleSeat } from '../../../vehicles/VehicleSeat'
-import { Side } from '../../../enums/Side'
+import { Side } from '../../../enums/side'
 import { Driving } from './driving'
-import { SeatType } from '../../../enums/SeatType'
+import { SeatType } from '../../../enums/seat-type'
 import { Sitting } from './sitting'
 import * as Utils from '../../../core/function-library'
 

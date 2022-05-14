@@ -2,7 +2,7 @@ import * as THREE from 'three'
 
 import { World } from './World'
 import { WaterShader } from '../../lib/shaders/WaterShader'
-import { IUpdatable } from '../interfaces/IUpdatable'
+import { IUpdatable } from '../interfaces/iupdatable'
 
 export class Ocean implements IUpdatable {
   public updateOrder: number = 10

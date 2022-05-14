@@ -14,7 +14,7 @@ import {
   Walk,
 } from './_stateLibrary'
 import { Character } from '../character'
-import { ICharacterState } from '../../interfaces/ICharacterState'
+import { ICharacterState } from '../../interfaces/icharacter-state'
 
 export abstract class CharacterStateBase implements ICharacterState {
   public character: Character

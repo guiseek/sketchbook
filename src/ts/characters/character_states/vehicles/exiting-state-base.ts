@@ -4,7 +4,7 @@ import * as Utils from '../../../core/function-library'
 import { CharacterStateBase } from '../_stateLibrary'
 import { Character } from '../../character'
 import { VehicleSeat } from '../../../vehicles/VehicleSeat'
-import { IControllable } from '../../../interfaces/IControllable'
+import { IControllable } from '../../../interfaces/icontrollable'
 import { Vehicle } from 'src/ts/vehicles/Vehicle'
 
 export abstract class ExitingStateBase extends CharacterStateBase {

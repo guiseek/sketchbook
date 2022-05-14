@@ -1,13 +1,13 @@
 import * as CANNON from 'cannon'
 
 import { Vehicle } from './Vehicle'
-import { IControllable } from '../interfaces/IControllable'
-import { KeyBinding } from '../core/KeyBinding'
+import { IControllable } from '../interfaces/icontrollable'
+import { KeyBinding } from '../core/key-binding'
 import * as THREE from 'three'
 import * as Utils from '../core/function-library'
 import { SpringSimulator } from '../physics/spring_simulation/SpringSimulator'
 import { World } from '../world/World'
-import { EntityType } from '../enums/EntityType'
+import { EntityType } from '../enums/entity-type'
 import { VehicleCarAction } from '../types/vehicle-action'
 
 export class Car extends Vehicle implements IControllable {

@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { ICharacterAI } from '../../interfaces/ICharacterAI'
+import { ICharacterAI } from '../../interfaces/icharacter-ai'
 import { Character } from '../character'
 
 export class RandomBehaviour implements ICharacterAI {

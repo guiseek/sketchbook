@@ -1,4 +1,4 @@
-import { KeyBinding } from '../core/KeyBinding'
+import { KeyBinding } from '../core/key-binding'
 
 export interface IInputReceiver {
   actions: { [action: string]: KeyBinding }

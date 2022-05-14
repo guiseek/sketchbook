@@ -2,12 +2,12 @@ import * as THREE from 'three'
 import { CharacterStateBase } from '../_stateLibrary'
 import { Character } from '../../character'
 import { VehicleSeat } from '../../../vehicles/VehicleSeat'
-import { Side } from '../../../enums/Side'
-import { SeatType } from '../../../enums/SeatType'
+import { Side } from '../../../enums/side'
+import { SeatType } from '../../../enums/seat-type'
 import { Driving } from './driving'
 import { Sitting } from './sitting'
 import * as Utils from '../../../core/function-library'
-import { Space } from '../../../enums/Space'
+import { Space } from '../../../enums/space'
 
 export class SwitchingSeats extends CharacterStateBase {
   private toSeat: VehicleSeat

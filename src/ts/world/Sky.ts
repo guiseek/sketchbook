@@ -1,8 +1,8 @@
 import { SkyShader } from '../../lib/shaders/SkyShader'
 import * as THREE from 'three'
 import { World } from './World'
-import { EntityType } from '../enums/EntityType'
-import { IUpdatable } from '../interfaces/IUpdatable'
+import { EntityType } from '../enums/entity-type'
+import { IUpdatable } from '../interfaces/iupdatable'
 import { default as CSM } from 'three-csm'
 
 export class Sky extends THREE.Object3D implements IUpdatable {

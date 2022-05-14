@@ -1,7 +1,7 @@
 import * as CANNON from 'cannon'
 import * as THREE from 'three'
 import * as Utils from '../../core/function-library'
-import { ICollider } from '../../interfaces/ICollider'
+import { ICollider } from '../../interfaces/icollider'
 
 export class BoxCollider implements ICollider {
   public options: any

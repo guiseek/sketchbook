@@ -5,7 +5,7 @@ import {
   Sprint,
   Walk,
 } from './_stateLibrary'
-import { ICharacterState } from '../../interfaces/ICharacterState'
+import { ICharacterState } from '../../interfaces/icharacter-state'
 import { Character } from '../character'
 
 export class DropRunning extends CharacterStateBase implements ICharacterState {

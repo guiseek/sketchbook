@@ -1,5 +1,5 @@
 import { CharacterStateBase, Falling } from './_stateLibrary'
-import { ICharacterState } from '../../interfaces/ICharacterState'
+import { ICharacterState } from '../../interfaces/icharacter-state'
 import { Character } from '../character'
 
 export class JumpRunning extends CharacterStateBase implements ICharacterState {

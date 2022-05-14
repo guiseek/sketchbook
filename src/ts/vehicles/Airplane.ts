@@ -2,12 +2,12 @@ import * as THREE from 'three'
 import * as CANNON from 'cannon'
 
 import { Vehicle } from './Vehicle'
-import { IControllable } from '../interfaces/IControllable'
-import { IWorldEntity } from '../interfaces/IWorldEntity'
-import { KeyBinding } from '../core/KeyBinding'
+import { IControllable } from '../interfaces/icontrollable'
+import { IWorldEntity } from '../interfaces/iworld-entity'
+import { KeyBinding } from '../core/key-binding'
 import { SpringSimulator } from '../physics/spring_simulation/SpringSimulator'
 import * as Utils from '../core/function-library'
-import { EntityType } from '../enums/EntityType'
+import { EntityType } from '../enums/entity-type'
 import { VehicleAirplaneAction } from '../types/vehicle-action'
 
 export class Airplane extends Vehicle implements IControllable, IWorldEntity {

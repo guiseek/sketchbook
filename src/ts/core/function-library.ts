@@ -3,9 +3,9 @@ import * as CANNON from 'cannon'
 import * as _ from 'lodash'
 import { SimulationFrame } from '../physics/spring_simulation/SimulationFrame'
 import { World } from '../world/World'
-import { Side } from '../enums/Side'
+import { Side } from '../enums/side'
 import { Object3D } from 'three'
-import { Space } from '../enums/Space'
+import { Space } from '../enums/space'
 
 export function createCapsuleGeometry(
   radius: number = 1,

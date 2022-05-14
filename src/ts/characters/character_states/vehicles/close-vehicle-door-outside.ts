@@ -1,7 +1,7 @@
 import { CharacterStateBase } from '../_stateLibrary'
 import { Character } from '../../character'
 import { VehicleSeat } from '../../../vehicles/VehicleSeat'
-import { Side } from '../../../enums/Side'
+import { Side } from '../../../enums/side'
 import { Idle } from '../idle'
 import * as Utils from '../../../core/function-library'
 

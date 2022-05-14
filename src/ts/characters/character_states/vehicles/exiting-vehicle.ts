@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import * as Utils from '../../../core/function-library'
 
 import { Character } from '../../character'
-import { Side } from '../../../enums/Side'
+import { Side } from '../../../enums/side'
 import { VehicleSeat } from '../../../vehicles/VehicleSeat'
 import { Idle } from '../idle'
 import { CloseVehicleDoorOutside } from './close-vehicle-door-outside'

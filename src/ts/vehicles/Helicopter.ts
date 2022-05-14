@@ -3,11 +3,11 @@ import * as CANNON from 'cannon'
 import * as Utils from '../core/function-library'
 
 import { Vehicle } from './Vehicle'
-import { IControllable } from '../interfaces/IControllable'
-import { IWorldEntity } from '../interfaces/IWorldEntity'
-import { KeyBinding } from '../core/KeyBinding'
+import { IControllable } from '../interfaces/icontrollable'
+import { IWorldEntity } from '../interfaces/iworld-entity'
+import { KeyBinding } from '../core/key-binding'
 import { World } from '../world/World'
-import { EntityType } from '../enums/EntityType'
+import { EntityType } from '../enums/entity-type'
 import { VehicleHelicopterAction } from '../types/vehicle-action'
 
 export class Helicopter extends Vehicle implements IControllable, IWorldEntity {

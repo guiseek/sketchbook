@@ -1,4 +1,4 @@
-import { InfoStack } from './InfoStack'
+import { InfoStack } from './Info-stack'
 
 export class InfoStackMessage {
   public domElement: HTMLElement

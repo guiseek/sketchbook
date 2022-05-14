@@ -3,7 +3,7 @@ import * as CANNON from 'cannon'
 import * as Utils from '../../core/function-library'
 
 import { FollowTarget } from './follow-target'
-import { ICharacterAI } from '../../interfaces/ICharacterAI'
+import { ICharacterAI } from '../../interfaces/icharacter-ai'
 import { PathNode } from '../../world/PathNode'
 import { Vehicle } from '../../vehicles/Vehicle'
 

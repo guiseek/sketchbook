@@ -1,8 +1,8 @@
-import { ISpawnPoint } from '../interfaces/ISpawnPoint'
+import { ISpawnPoint } from '../interfaces/ispawn-point'
 import * as THREE from 'three'
 import { World } from './World'
 import { Character } from '../characters/character'
-import { LoadingManager } from '../core/LoadingManager'
+import { LoadingManager } from '../core/loading-manager'
 import * as Utils from '../core/function-library'
 
 export class CharacterSpawnPoint implements ISpawnPoint {

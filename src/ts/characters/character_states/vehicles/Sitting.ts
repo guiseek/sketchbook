@@ -2,7 +2,7 @@ import { CharacterStateBase } from '../_stateLibrary'
 import { Character } from '../../character'
 import { VehicleSeat } from 'src/ts/vehicles/VehicleSeat'
 import { CloseVehicleDoorInside } from './close-vehicle-door-inside'
-import { SeatType } from '../../../enums/SeatType'
+import { SeatType } from '../../../enums/seat-type'
 import { SwitchingSeats } from './switching-seats'
 
 export class Sitting extends CharacterStateBase {

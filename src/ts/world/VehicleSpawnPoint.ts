@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { ISpawnPoint } from '../interfaces/ISpawnPoint'
+import { ISpawnPoint } from '../interfaces/ispawn-point'
 import { World } from '../world/World'
 import { Helicopter } from '../vehicles/Helicopter'
 import { Airplane } from '../vehicles/Airplane'
@@ -8,8 +8,8 @@ import * as Utils from '../core/function-library'
 import { Vehicle } from '../vehicles/Vehicle'
 import { Character } from '../characters/character'
 import { FollowPath } from '../characters/character_ai/follow-path'
-import { LoadingManager } from '../core/LoadingManager'
-import { IWorldEntity } from '../interfaces/IWorldEntity'
+import { LoadingManager } from '../core/loading-manager'
+import { IWorldEntity } from '../interfaces/iworld-entity'
 
 export class VehicleSpawnPoint implements ISpawnPoint {
   public type: string

@@ -1,7 +1,7 @@
 import { World } from '../world/World'
-import { IInputReceiver } from '../interfaces/IInputReceiver'
-import { EntityType } from '../enums/EntityType'
-import { IUpdatable } from '../interfaces/IUpdatable'
+import { IInputReceiver } from '../interfaces/iinput-receiver'
+import { EntityType } from '../enums/entity-type'
+import { IUpdatable } from '../interfaces/iupdatable'
 
 export class InputManager implements IUpdatable {
   public updateOrder: number = 3

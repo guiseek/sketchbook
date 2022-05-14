@@ -3,7 +3,7 @@ import * as CANNON from 'cannon'
 import { Vehicle } from './Vehicle'
 import * as Utils from '../core/function-library'
 import { VehicleSeat } from './VehicleSeat'
-import { Side } from '../enums/Side'
+import { Side } from '../enums/side'
 
 export class VehicleDoor {
   public vehicle: Vehicle

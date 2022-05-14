@@ -1,11 +1,11 @@
 import * as THREE from 'three'
 import * as Utils from './function-library'
 import { World } from '../world/World'
-import { IInputReceiver } from '../interfaces/IInputReceiver'
-import { KeyBinding } from './KeyBinding'
+import { IInputReceiver } from '../interfaces/iinput-receiver'
+import { KeyBinding } from './key-binding'
 import { Character } from '../characters/character'
 import _ = require('lodash')
-import { IUpdatable } from '../interfaces/IUpdatable'
+import { IUpdatable } from '../interfaces/iupdatable'
 
 export class CameraOperator implements IInputReceiver, IUpdatable {
   public updateOrder: number = 4

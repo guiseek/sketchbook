@@ -1,6 +1,6 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { LoadingTrackerEntry } from './LoadingTrackerEntry'
-import { UIManager } from './UIManager'
+import { LoadingTrackerEntry } from './loading-trackerEntry'
+import { UIManager } from './ui-manager'
 import { Scenario } from '../world/Scenario'
 import Swal from 'sweetalert2'
 import { World } from '../world/World'

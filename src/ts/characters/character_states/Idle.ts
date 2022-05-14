@@ -1,5 +1,5 @@
 import { CharacterStateBase, JumpIdle, Walk } from './_stateLibrary'
-import { ICharacterState } from '../../interfaces/ICharacterState'
+import { ICharacterState } from '../../interfaces/icharacter-state'
 import { Character } from '../character'
 
 export class Idle extends CharacterStateBase implements ICharacterState {
