@@ -2,8 +2,8 @@ import * as THREE from 'three'
 import { SeatType } from '../enums/seat-type'
 import { Side } from '../enums/side'
 import { IControllable } from '../interfaces/icontrollable'
-import { VehicleDoor } from './VehicleDoor'
-import { Vehicle } from './Vehicle'
+import { VehicleDoor } from './vehicle-door'
+import { Vehicle } from './vehicle'
 import { Character } from '../characters/character'
 
 export class VehicleSeat {

@@ -1,4 +1,4 @@
-import { PathNode } from './PathNode';
+import { PathNode } from './path-node';
 export declare class Path {
     nodes: {
         [nodeName: string]: PathNode;

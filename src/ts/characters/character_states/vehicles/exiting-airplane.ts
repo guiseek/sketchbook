@@ -2,10 +2,10 @@ import * as THREE from 'three'
 import * as Utils from '../../../core/function-library'
 
 import { Character } from '../../character'
-import { VehicleSeat } from '../../../vehicles/VehicleSeat'
+import { VehicleSeat } from '../../../vehicles/vehicle-seat'
 import { Falling } from '../falling'
 import { ExitingStateBase } from './exiting-state-base'
-import { Vehicle } from '../../../vehicles/Vehicle'
+import { Vehicle } from '../../../vehicles/vehicle'
 
 export class ExitingAirplane extends ExitingStateBase {
   constructor(character: Character, seat: VehicleSeat) {

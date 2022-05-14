@@ -1,9 +1,9 @@
 import * as THREE from 'three'
 import { ICharacterAI } from '../../interfaces/icharacter-ai'
 import * as Utils from '../../core/function-library'
-import { Vehicle } from '../../vehicles/Vehicle'
+import { Vehicle } from '../../vehicles/vehicle'
 import { Character } from '../character'
-import { Car } from '../../vehicles/Car'
+import { Car } from '../../vehicles/car'
 import { EntityType } from '../../enums/entity-type'
 
 export class FollowTarget implements ICharacterAI {

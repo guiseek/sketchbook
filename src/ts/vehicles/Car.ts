@@ -1,12 +1,12 @@
 import * as CANNON from 'cannon'
 
-import { Vehicle } from './Vehicle'
+import { Vehicle } from './vehicle'
 import { IControllable } from '../interfaces/icontrollable'
 import { KeyBinding } from '../core/key-binding'
 import * as THREE from 'three'
 import * as Utils from '../core/function-library'
-import { SpringSimulator } from '../physics/spring_simulation/SpringSimulator'
-import { World } from '../world/World'
+import { SpringSimulator } from '../physics/spring_simulation/spring-simulator'
+import { World } from '../world/world'
 import { EntityType } from '../enums/entity-type'
 import { VehicleCarAction } from '../types/vehicle-action'
 
@@ -95,7 +95,7 @@ export class Car extends Vehicle implements IControllable {
     type Gear = 'R' | `${number}`
 
     // Engine
-    const engineForce = 5000
+    const engineForce = 500
     const gearsMaxSpeeds: Record<Gear, number> = {
       R: -4,
       '0': 0,

@@ -1,6 +1,6 @@
 import { CharacterStateBase } from '../_stateLibrary'
 import { Character } from '../../character'
-import { VehicleSeat } from 'src/ts/vehicles/VehicleSeat'
+import { VehicleSeat } from 'src/ts/vehicles/vehicle-seat'
 import { CloseVehicleDoorInside } from './close-vehicle-door-inside'
 
 export class Driving extends CharacterStateBase {

@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import * as CANNON from 'cannon'
-import { Vehicle } from './Vehicle'
+import { Vehicle } from './vehicle'
 import * as Utils from '../core/function-library'
-import { VehicleSeat } from './VehicleSeat'
+import { VehicleSeat } from './vehicle-seat'
 import { Side } from '../enums/side'
 
 export class VehicleDoor {

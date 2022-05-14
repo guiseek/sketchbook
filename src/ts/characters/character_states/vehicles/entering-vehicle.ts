@@ -3,14 +3,14 @@ import { CharacterStateBase } from '../_stateLibrary'
 import { Character } from '../../character'
 import { IControllable } from '../../../interfaces/icontrollable'
 import { Driving } from './driving'
-import { VehicleSeat } from '../../../vehicles/VehicleSeat'
+import { VehicleSeat } from '../../../vehicles/vehicle-seat'
 import { Side } from '../../../enums/side'
 import { Sitting } from './sitting'
 import { SeatType } from '../../../enums/seat-type'
 import { EntityType } from '../../../enums/entity-type'
 import { Object3D } from 'three'
 import * as Utils from '../../../core/function-library'
-import { SpringSimulator } from '../../../physics/spring_simulation/SpringSimulator'
+import { SpringSimulator } from '../../../physics/spring_simulation/spring-simulator'
 
 export class EnteringVehicle extends CharacterStateBase {
   private vehicle: IControllable

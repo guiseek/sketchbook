@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import { World } from '../world/World';
-import { IInputReceiver } from '../interfaces/IInputReceiver';
-import { KeyBinding } from './KeyBinding';
+import { IInputReceiver } from '../interfaces/iinput-receiver';
+import { KeyBinding } from './key-binding';
 import { Character } from '../characters/character';
-import { IUpdatable } from '../interfaces/IUpdatable';
+import { IUpdatable } from '../interfaces/iupdatable';
 export declare class CameraOperator implements IInputReceiver, IUpdatable {
     updateOrder: number;
     world: World;

@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { VehicleSeat } from '../vehicles/VehicleSeat'
+import { VehicleSeat } from '../vehicles/vehicle-seat'
 import { Character } from './character'
 
 export class VehicleEntryInstance {

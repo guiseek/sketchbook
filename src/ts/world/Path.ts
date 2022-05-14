@@ -1,4 +1,4 @@
-import { PathNode } from './PathNode'
+import { PathNode } from './path-node'
 
 export class Path {
   public nodes: { [nodeName: string]: PathNode } = {}

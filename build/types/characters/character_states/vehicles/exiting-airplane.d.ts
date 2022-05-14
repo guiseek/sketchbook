@@ -1,5 +1,5 @@
 import { Character } from '../../character';
-import { VehicleSeat } from '../../../vehicles/VehicleSeat';
+import { VehicleSeat } from '../../../vehicles/vehicle-seat';
 import { ExitingStateBase } from './exiting-state-base';
 export declare class ExitingAirplane extends ExitingStateBase {
     constructor(character: Character, seat: VehicleSeat);

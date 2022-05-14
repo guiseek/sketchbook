@@ -23,14 +23,14 @@ import { UIManager } from '../core/ui-manager'
 import { IWorldEntity } from '../interfaces/iworld-entity'
 import { IUpdatable } from '../interfaces/iupdatable'
 import { Character } from '../characters/character'
-import { Path } from './Path'
+import { Path } from './path'
 import { CollisionGroups } from '../enums/collision-groups'
-import { BoxCollider } from '../physics/colliders/BoxCollider'
-import { TrimeshCollider } from '../physics/colliders/TrimeshCollider'
-import { Vehicle } from '../vehicles/Vehicle'
-import { Scenario } from './Scenario'
-import { Sky } from './Sky'
-import { Ocean } from './Ocean'
+import { BoxCollider } from '../physics/colliders/box-collider'
+import { TrimeshCollider } from '../physics/colliders/trimesh-collider'
+import { Vehicle } from '../vehicles/vehicle'
+import { Scenario } from './scenario'
+import { Sky } from './sky'
+import { Ocean } from './ocean'
 
 export class World {
   public renderer: THREE.WebGLRenderer
@@ -505,13 +505,13 @@ export class World {
     // UI
     $(`	<div id="ui-container" style="display: none;">
 				<div class="github-corner">
-					<a href="https://github.com/swift502/Sketchbook" target="_blank" title="Fork me on GitHub">
+					<a href="https://github.com/guiseek/sketchbook" target="_blank" title="Fork me on GitHub">
 						<svg viewbox="0 0 100 100" fill="currentColor">
 							<title>Fork me on GitHub</title>
 							<path d="M0 0v100h100V0H0zm60 70.2h.2c1 2.7.3 4.7 0 5.2 1.4 1.4 2 3 2 5.2 0 7.4-4.4 9-8.7 9.5.7.7 1.3 2
 							1.3 3.7V99c0 .5 1.4 1 1.4 1H44s1.2-.5 1.2-1v-3.8c-3.5 1.4-5.2-.8-5.2-.8-1.5-2-3-2-3-2-2-.5-.2-1-.2-1
 							2-.7 3.5.8 3.5.8 2 1.7 4 1 5 .3.2-1.2.7-2 1.2-2.4-4.3-.4-8.8-2-8.8-9.4 0-2 .7-4 2-5.2-.2-.5-1-2.5.2-5
-							0 0 1.5-.6 5.2 1.8 1.5-.4 3.2-.6 4.8-.6 1.6 0 3.3.2 4.8.7 2.8-2 4.4-2 5-2z"></path>
+							0 0 1.5-.6 5.2 1.8 1.5-.4 3.2-.6 4.8-.6 1.6 0 3.3.2 4.8.7 2.8-2 4.4-2 5-2z" fill="#fff"></path>
 						</svg>
 					</a>
 				</div>

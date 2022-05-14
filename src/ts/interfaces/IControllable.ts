@@ -1,6 +1,6 @@
 import { Character } from '../characters/character'
 import { IInputReceiver } from './iinput-receiver'
-import { VehicleSeat } from '../vehicles/VehicleSeat'
+import { VehicleSeat } from '../vehicles/vehicle-seat'
 import { EntityType } from '../enums/entity-type'
 
 export interface IControllable extends IInputReceiver {

@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon';
-import { Vehicle } from './Vehicle';
-import { IControllable } from '../interfaces/IControllable';
-import { IWorldEntity } from '../interfaces/IWorldEntity';
-import { KeyBinding } from '../core/KeyBinding';
-import { EntityType } from '../enums/EntityType';
+import { Vehicle } from './vehicle';
+import { IControllable } from '../interfaces/icontrollable';
+import { IWorldEntity } from '../interfaces/iworld-entity';
+import { KeyBinding } from '../core/key-binding';
+import { EntityType } from '../enums/entity-type';
 import { VehicleAirplaneAction } from '../types/vehicle-action';
 export declare class Airplane extends Vehicle implements IControllable, IWorldEntity {
     actions: Record<VehicleAirplaneAction, KeyBinding>;

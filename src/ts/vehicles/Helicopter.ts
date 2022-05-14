@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import * as CANNON from 'cannon'
 import * as Utils from '../core/function-library'
 
-import { Vehicle } from './Vehicle'
+import { Vehicle } from './vehicle'
 import { IControllable } from '../interfaces/icontrollable'
 import { IWorldEntity } from '../interfaces/iworld-entity'
 import { KeyBinding } from '../core/key-binding'

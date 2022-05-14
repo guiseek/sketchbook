@@ -1,4 +1,4 @@
-import { Path } from './Path'
+import { Path } from './path'
 import { Object3D } from 'three'
 
 export class PathNode {

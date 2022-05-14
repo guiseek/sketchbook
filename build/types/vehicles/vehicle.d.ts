@@ -2,11 +2,11 @@ import { Character } from '../characters/character';
 import * as THREE from 'three';
 import * as CANNON from 'cannon';
 import { World } from '../world/World';
-import { KeyBinding } from '../core/KeyBinding';
-import { VehicleSeat } from './VehicleSeat';
-import { Wheel } from './Wheel';
-import { EntityType } from '../enums/EntityType';
-import { IWorldEntity } from '../interfaces/IWorldEntity';
+import { KeyBinding } from '../core/key-binding';
+import { VehicleSeat } from './vehicle-seat';
+import { Wheel } from './wheel';
+import { EntityType } from '../enums/entity-type';
+import { IWorldEntity } from '../interfaces/iworld-entity';
 import { VehicleAction } from '../types/vehicle-action';
 export declare abstract class Vehicle extends THREE.Object3D implements IWorldEntity {
     updateOrder: number;

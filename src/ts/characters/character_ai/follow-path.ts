@@ -4,8 +4,8 @@ import * as Utils from '../../core/function-library'
 
 import { FollowTarget } from './follow-target'
 import { ICharacterAI } from '../../interfaces/icharacter-ai'
-import { PathNode } from '../../world/PathNode'
-import { Vehicle } from '../../vehicles/Vehicle'
+import { PathNode } from '../../world/path-node'
+import { Vehicle } from '../../vehicles/vehicle'
 
 export class FollowPath extends FollowTarget implements ICharacterAI {
   public nodeRadius: number

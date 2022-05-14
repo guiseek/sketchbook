@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { World } from './World';
-import { IUpdatable } from '../interfaces/IUpdatable';
+import { IUpdatable } from '../interfaces/iupdatable';
 import { default as CSM } from 'three-csm';
 export declare class Sky extends THREE.Object3D implements IUpdatable {
     updateOrder: number;

@@ -5,7 +5,7 @@
  * Original pen https://codepen.io/knoland/pen/XKxAJb
  * 
  * Adapted for Sketchbook by Jan Bláha
- * https://github.com/swift502/Sketchbook
+ * https://github.com/guiseek/sketchbook
  */
 
 const THREE = require('three');

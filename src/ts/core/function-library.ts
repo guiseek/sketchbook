@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import * as CANNON from 'cannon'
 import * as _ from 'lodash'
-import { SimulationFrame } from '../physics/spring_simulation/SimulationFrame'
+import { SimulationFrame } from '../physics/spring_simulation/simulation-frame'
 import { World } from '../world/World'
 import { Side } from '../enums/side'
 import { Object3D } from 'three'

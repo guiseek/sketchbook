@@ -1,7 +1,7 @@
 import { ISpawnPoint } from '../interfaces/ispawn-point'
-import { VehicleSpawnPoint } from './VehicleSpawnPoint'
-import { CharacterSpawnPoint } from './CharacterSpawnPoint'
-import { World } from '../world/World'
+import { VehicleSpawnPoint } from './vehicle-spawn-point'
+import { CharacterSpawnPoint } from './character-spawn-point'
+import { World } from './World'
 import { LoadingManager } from '../core/loading-manager'
 
 export class Scenario {
