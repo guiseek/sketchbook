@@ -16,7 +16,7 @@
   "scripts": {
     "dev": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "format": "prettier -w src/**/*.{js,ts}"
+    "format": "prettier -w **/*.{ts,js,json}"
   },
   "repository": {
     "type": "git",

@@ -4,16 +4,16 @@ import { EntityType } from '../enums/entity-type'
 import { World } from '../world/World'
 
 export class InfoStack implements IWorldEntity {
-  public updateOrder: number = 3
+  public updateOrder = 3
   public entityType: EntityType = EntityType.System
 
   public messages: InfoStackMessage[] = []
-  public entranceAnimation: string = 'animate__slideInLeft'
-  public exitAnimation: string = 'animate__backOutDown'
+  public entranceAnimation = 'animate__slideInLeft'
+  public exitAnimation = 'animate__backOutDown'
 
-  public messageDuration: number = 3
+  public messageDuration = 3
 
-  public addMessage(text: string): void {
+  public addMessage(text: string) {
     let messageElement = document.createElement('div')
     messageElement.classList.add(
       'console-message',
@@ -27,13 +27,13 @@ export class InfoStack implements IWorldEntity {
     this.messages.push(new InfoStackMessage(this, messageElement))
   }
 
-  public update(timeStep: number): void {
+  public update(timeStep: number) {
     for (const message of this.messages) {
       message.update(timeStep)
     }
   }
 
-  public addToWorld(world: World): void {}
+  public addToWorld(world: World) {}
 
-  public removeFromWorld(world: World): void {}
+  public removeFromWorld(world: World) {}
 }

@@ -1,30 +1,29 @@
-import { World } from '../world/World'
 import { IInputReceiver } from '../interfaces/iinput-receiver'
-import { EntityType } from '../enums/entity-type'
 import { IUpdatable } from '../interfaces/iupdatable'
+import { World } from '../world/World'
 
 export class InputManager implements IUpdatable {
-  public updateOrder: number = 3
+  updateOrder = 3
 
-  public world: World
-  public domElement: any
-  public pointerLock: any
-  public isLocked: boolean
-  public inputReceiver: IInputReceiver
+  world: World
+  domElement: HTMLElement
+  pointerLock: any
+  isLocked: boolean
+  inputReceiver: IInputReceiver
 
-  public boundOnMouseDown: (evt: any) => void
-  public boundOnMouseMove: (evt: any) => void
-  public boundOnMouseUp: (evt: any) => void
-  public boundOnMouseWheelMove: (evt: any) => void
-  public boundOnPointerlockChange: (evt: any) => void
-  public boundOnPointerlockError: (evt: any) => void
-  public boundOnKeyDown: (evt: any) => void
-  public boundOnKeyUp: (evt: any) => void
+  boundOnMouseDown: (evt: MouseEvent) => void
+  boundOnMouseMove: (evt: MouseEvent) => void
+  boundOnMouseUp: (evt: MouseEvent) => void
+  boundOnMouseWheelMove: (evt: WheelEvent) => void
+  boundOnPointerlockChange: (evt: Event) => void
+  boundOnPointerlockError: (evt: any) => void
+  boundOnKeyDown: (evt: KeyboardEvent) => void
+  boundOnKeyUp: (evt: KeyboardEvent) => void
 
   constructor(world: World, domElement: HTMLElement) {
     this.world = world
     this.pointerLock = world.params.Pointer_Lock
-    this.domElement = domElement || document.body
+    this.domElement = domElement ?? document.body
     this.isLocked = false
 
     // Bindings for later event use
@@ -64,28 +63,24 @@ export class InputManager implements IUpdatable {
     world.registerUpdatable(this)
   }
 
-  public update(timestep: number, unscaledTimeStep: number): void {
-    if (
-      this.inputReceiver === undefined &&
-      this.world !== undefined &&
-      this.world.cameraOperator !== undefined
-    ) {
+  update(timestep: number, unscaledTimeStep: number): void {
+    if (!this.inputReceiver && !!this.world.cameraOperator) {
       this.setInputReceiver(this.world.cameraOperator)
     }
 
     this.inputReceiver?.inputReceiverUpdate(unscaledTimeStep)
   }
 
-  public setInputReceiver(receiver: IInputReceiver): void {
+  setInputReceiver(receiver: IInputReceiver): void {
     this.inputReceiver = receiver
     this.inputReceiver.inputReceiverInit()
   }
 
-  public setPointerLock(enabled: boolean): void {
+  setPointerLock(enabled: boolean): void {
     this.pointerLock = enabled
   }
 
-  public onPointerlockChange(event: MouseEvent): void {
+  onPointerlockChange(event: Event): void {
     if (document.pointerLockElement === this.domElement) {
       this.domElement.addEventListener(
         'mousemove',
@@ -105,11 +100,11 @@ export class InputManager implements IUpdatable {
     }
   }
 
-  public onPointerlockError(event: MouseEvent): void {
+  onPointerlockError(event: MouseEvent): void {
     console.error('PointerLockControls: Unable to use Pointer Lock API')
   }
 
-  public onMouseDown(event: MouseEvent): void {
+  onMouseDown(event: MouseEvent): void {
     if (this.pointerLock) {
       this.domElement.requestPointerLock()
     } else {
@@ -126,7 +121,7 @@ export class InputManager implements IUpdatable {
     }
   }
 
-  public onMouseMove(event: MouseEvent): void {
+  onMouseMove(event: MouseEvent): void {
     if (this.inputReceiver !== undefined) {
       this.inputReceiver.handleMouseMove(
         event,
@@ -136,7 +131,7 @@ export class InputManager implements IUpdatable {
     }
   }
 
-  public onMouseUp(event: MouseEvent): void {
+  onMouseUp(event: MouseEvent): void {
     if (!this.pointerLock) {
       this.domElement.removeEventListener(
         'mousemove',
@@ -151,19 +146,30 @@ export class InputManager implements IUpdatable {
     }
   }
 
-  public onKeyDown(event: KeyboardEvent): void {
+  onKeyDown(event: KeyboardEvent): void {
     if (this.inputReceiver !== undefined) {
       this.inputReceiver.handleKeyboardEvent(event, event.code, true)
     }
   }
 
-  public onKeyUp(event: KeyboardEvent): void {
+  onKeyUp(event: KeyboardEvent): void {
     if (this.inputReceiver !== undefined) {
       this.inputReceiver.handleKeyboardEvent(event, event.code, false)
     }
   }
 
-  public onMouseWheelMove(event: WheelEvent): void {
+  /**
+   * @Todo use or remove
+   */
+  handleEvent<K extends keyof GlobalEventHandlersEventMap>() {
+    return (event: GlobalEventHandlersEventMap[K]) => {
+      if (this.inputReceiver !== undefined && event instanceof WheelEvent) {
+        this.inputReceiver.handleMouseWheel(event, event.deltaY)
+      }
+    }
+  }
+
+  onMouseWheelMove(event: WheelEvent): void {
     if (this.inputReceiver !== undefined) {
       this.inputReceiver.handleMouseWheel(event, event.deltaY)
     }
