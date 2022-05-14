@@ -175,7 +175,7 @@ export class World {
 
         Swal.fire({
           title: 'Bem vindo ao Borba Gato!',
-					text: 'Sinta-se à vontade para explorar o bairro e usar os veículos disponíveis. Existem também várias turmas de outras ruas prontas para diversão no painel direito.',
+          text: 'Sinta-se à vontade para explorar o bairro e usar os veículos disponíveis. Existem também várias turmas de outras ruas prontas para diversão no painel direito.',
           footer:
             '<a href="https://github.com/guiseek/sketchbook" target="_blank">GitHub</a>',
           confirmButtonText: 'Blz!',
@@ -194,7 +194,7 @@ export class World {
       Swal.fire({
         icon: 'success',
         title: 'Eaí BG!',
-				text: 'O centro esportivo está vazio e foi inicializado com sucesso. Aprecie a quadrinha.',
+        text: 'O centro esportivo está vazio e foi inicializado com sucesso. Aprecie a quadrinha.',
         buttonsStyling: false,
       })
     }

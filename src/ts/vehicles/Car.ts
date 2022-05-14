@@ -11,7 +11,7 @@ import { EntityType } from '../enums/entity-type'
 import { VehicleCarAction } from '../types/vehicle-action'
 
 export class Car extends Vehicle implements IControllable {
-	public actions: Record<VehicleCarAction, KeyBinding>
+  public actions: Record<VehicleCarAction, KeyBinding>
   public entityType: EntityType = EntityType.Car
   public drive: string = 'awd'
   get speed(): number {
@@ -32,8 +32,6 @@ export class Car extends Vehicle implements IControllable {
 
   private canTiltForwards: boolean = false
   private characterWantsToExit: boolean = false
-
-	
 
   constructor(gltf: any) {
     super(gltf, {
