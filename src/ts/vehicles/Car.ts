@@ -93,7 +93,7 @@ export class Car extends Vehicle implements IControllable {
     type Gear = 'R' | `${number}`
 
     // Engine
-    const engineForce = 500
+    const engineForce = 5000
     const gearsMaxSpeeds: Record<Gear, number> = {
       R: -4,
       '0': 0,
