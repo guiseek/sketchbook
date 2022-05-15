@@ -1,6 +1,6 @@
-import { World } from '../world/World'
 import { EntityType } from '../enums/entity-type'
 import { IUpdatable } from './iupdatable'
+import { World } from '../world/World'
 
 export interface IWorldEntity extends IUpdatable {
   entityType: EntityType

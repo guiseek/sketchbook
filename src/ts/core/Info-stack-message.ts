@@ -1,7 +1,7 @@
 import { InfoStack } from './Info-stack'
 
 export class InfoStackMessage {
-  public domElement: HTMLElement
+  domElement: HTMLElement
 
   private customConsole: InfoStack
   private elapsedTime = 0
@@ -12,7 +12,7 @@ export class InfoStackMessage {
     this.domElement = domElement
   }
 
-  public update(timeStep: number) {
+  update(timeStep: number) {
     this.elapsedTime += timeStep
 
     if (

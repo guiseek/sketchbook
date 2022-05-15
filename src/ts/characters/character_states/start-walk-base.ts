@@ -1,14 +1,14 @@
 import * as Utils from '../../core/function-library'
+import { Character } from '../character'
 import {
   CharacterStateBase,
-  Idle,
   IdleRotateLeft,
   IdleRotateRight,
   JumpRunning,
   Sprint,
+  Idle,
   Walk,
 } from './_stateLibrary'
-import { Character } from '../character'
 
 export class StartWalkBase extends CharacterStateBase {
   constructor(character: Character) {
@@ -23,7 +23,7 @@ export class StartWalkBase extends CharacterStateBase {
     // this.character.velocitySimulator.mass = 1;
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number) {
     super.update(timeStep)
 
     if (this.animationEnded(timeStep)) {
@@ -52,7 +52,7 @@ export class StartWalkBase extends CharacterStateBase {
     this.fallInAir()
   }
 
-  public onInputChange(): void {
+  onInputChange() {
     super.onInputChange()
 
     if (this.character.actions.jump.justPressed) {

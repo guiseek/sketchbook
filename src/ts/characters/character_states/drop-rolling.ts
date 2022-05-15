@@ -13,7 +13,7 @@ export class DropRolling extends CharacterStateBase implements ICharacterState {
     this.playAnimation('drop_running_roll', 0.03)
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number) {
     super.update(timeStep)
 
     this.character.setCameraRelativeOrientationTarget()

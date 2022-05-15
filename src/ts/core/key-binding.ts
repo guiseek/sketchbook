@@ -1,8 +1,8 @@
 export class KeyBinding {
-  public eventCodes: string[]
-  public isPressed = false
-  public justPressed = false
-  public justReleased = false
+  eventCodes: string[]
+  isPressed = false
+  justPressed = false
+  justReleased = false
 
   constructor(...code: string[]) {
     this.eventCodes = code

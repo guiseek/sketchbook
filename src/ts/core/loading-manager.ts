@@ -6,8 +6,8 @@ import Swal from 'sweetalert2'
 import { World } from '../world/World'
 
 export class LoadingManager {
-  public firstLoad = true
-  public onFinishedCallback: () => void
+  firstLoad = true
+  onFinishedCallback: () => void
 
   private world: World
   private gltfLoader: GLTFLoader
@@ -22,7 +22,7 @@ export class LoadingManager {
     UIManager.setLoadingScreenVisible(true)
   }
 
-  public loadGLTF(path: string, onLoadingFinished: (gltf: any) => void): void {
+  loadGLTF(path: string, onLoadingFinished: (gltf: any) => void) {
     let trackerEntry = this.addLoadingEntry(path)
 
     this.gltfLoader.load(
@@ -42,14 +42,14 @@ export class LoadingManager {
     )
   }
 
-  public addLoadingEntry(path: string): LoadingTrackerEntry {
+  addLoadingEntry(path: string): LoadingTrackerEntry {
     let entry = new LoadingTrackerEntry(path)
     this.loadingTracker.push(entry)
 
     return entry
   }
 
-  public doneLoading(trackerEntry: LoadingTrackerEntry): void {
+  doneLoading(trackerEntry: LoadingTrackerEntry) {
     trackerEntry.finished = true
     trackerEntry.progress = 1
 
@@ -64,7 +64,7 @@ export class LoadingManager {
     }
   }
 
-  public createWelcomeScreenCallback(scenario: Scenario): void {
+  createWelcomeScreenCallback(scenario: Scenario) {
     if (this.onFinishedCallback === undefined) {
       this.onFinishedCallback = () => {
         this.world.update(1, 1)

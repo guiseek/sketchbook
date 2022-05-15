@@ -1,7 +1,7 @@
 import { Vector3 } from 'three'
 
 export class ClosestObjectFinder<T> {
-  public closestObject: T
+  closestObject: T
 
   private closestDistance: number = Number.POSITIVE_INFINITY
   private referencePosition: Vector3
@@ -12,7 +12,7 @@ export class ClosestObjectFinder<T> {
     if (maxDistance !== undefined) this.maxDistance = maxDistance
   }
 
-  public consider(object: T, objectPosition: Vector3): void {
+  consider(object: T, objectPosition: Vector3) {
     let distance = this.referencePosition.distanceTo(objectPosition)
 
     if (distance < this.maxDistance && distance < this.closestDistance) {

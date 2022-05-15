@@ -1,15 +1,14 @@
-import * as CANNON from 'cannon'
-import * as THREE from 'three'
-import * as Utils from '../../core/function-library'
 import { ICollider } from '../../interfaces/icollider'
+import * as Utils from '../../core/function-library'
+import * as CANNON from 'cannon'
 
 export class CapsuleCollider implements ICollider {
-  public options: any
-  public body: CANNON.Body
+  options: any
+  body: CANNON.Body
   // public visual: THREE.Mesh;
 
   constructor(options: any) {
-    let defaults = {
+    const defaults = {
       mass: 0,
       position: new CANNON.Vec3(),
       height: 0.5,
@@ -20,16 +19,16 @@ export class CapsuleCollider implements ICollider {
     options = Utils.setDefaults(options, defaults)
     this.options = options
 
-    let mat = new CANNON.Material('capsuleMat')
+    const mat = new CANNON.Material('capsuleMat')
     mat.friction = options.friction
 
-    let capsuleBody = new CANNON.Body({
+    const capsuleBody = new CANNON.Body({
       mass: options.mass,
       position: options.position,
     })
 
     // Compound shape
-    let sphereShape = new CANNON.Sphere(options.radius)
+    const sphereShape = new CANNON.Sphere(options.radius)
 
     // Materials
     capsuleBody.material = mat

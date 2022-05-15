@@ -33,35 +33,35 @@ import { Sky } from './sky'
 import { Ocean } from './ocean'
 
 export class World {
-  public renderer: THREE.WebGLRenderer
-  public camera: THREE.PerspectiveCamera
-  public composer: any
-  public stats: Stats
-  public graphicsWorld: THREE.Scene
-  public sky: Sky
-  public physicsWorld: CANNON.World
-  public parallelPairs: any[]
-  public physicsFrameRate: number
-  public physicsFrameTime: number
-  public physicsMaxPrediction: number
-  public clock: THREE.Clock
-  public renderDelta: number
-  public logicDelta: number
-  public requestDelta: number
-  public sinceLastFrame: number
-  public justRendered: boolean
-  public params: any
-  public inputManager: InputManager
-  public cameraOperator: CameraOperator
-  public timeScaleTarget: number = 1
-  public console: InfoStack
-  public cannonDebugRenderer: CannonDebugRenderer
-  public scenarios: Scenario[] = []
-  public characters: Character[] = []
-  public vehicles: Vehicle[] = []
-  public paths: Path[] = []
-  public scenarioGUIFolder: any
-  public updatables: IUpdatable[] = []
+  renderer: THREE.WebGLRenderer
+  camera: THREE.PerspectiveCamera
+  composer: any
+  stats: Stats
+  graphicsWorld: THREE.Scene
+  sky: Sky
+  physicsWorld: CANNON.World
+  parallelPairs: any[]
+  physicsFrameRate: number
+  physicsFrameTime: number
+  physicsMaxPrediction: number
+  clock: THREE.Clock
+  renderDelta: number
+  logicDelta: number
+  requestDelta: number
+  sinceLastFrame: number
+  justRendered: boolean
+  params: any
+  inputManager: InputManager
+  cameraOperator: CameraOperator
+  timeScaleTarget: number = 1
+  console: InfoStack
+  cannonDebugRenderer: CannonDebugRenderer
+  scenarios: Scenario[] = []
+  characters: Character[] = []
+  vehicles: Vehicle[] = []
+  paths: Path[] = []
+  scenarioGUIFolder: any
+  updatables: IUpdatable[] = []
 
   private lastScenarioID: string
 
@@ -207,7 +207,7 @@ export class World {
 
   // Update
   // Handles all logic updates.
-  public update(timeStep: number, unscaledTimeStep: number): void {
+  update(timeStep: number, unscaledTimeStep: number): void {
     this.updatePhysics(timeStep)
 
     // Update registred objects
@@ -226,7 +226,7 @@ export class World {
     if (this.params.Debug_Physics) this.cannonDebugRenderer.update()
   }
 
-  public updatePhysics(timeStep: number): void {
+  updatePhysics(timeStep: number): void {
     // Step the physics world
     this.physicsWorld.step(this.physicsFrameTime, timeStep)
 
@@ -249,7 +249,7 @@ export class World {
     })
   }
 
-  public isOutOfBounds(position: CANNON.Vec3): boolean {
+  isOutOfBounds(position: CANNON.Vec3): boolean {
     let inside =
       position.x > -211.882 &&
       position.x < 211.882 &&
@@ -261,7 +261,7 @@ export class World {
     return !inside && belowSeaLevel
   }
 
-  public outOfBoundsRespawn(body: CANNON.Body, position?: CANNON.Vec3): void {
+  outOfBoundsRespawn(body: CANNON.Body, position?: CANNON.Vec3): void {
     let newPos = position || new CANNON.Vec3(0, 16, 0)
     let newQuat = new CANNON.Quaternion(0, 0, 0, 1)
 
@@ -279,7 +279,7 @@ export class World {
    * Calls world's "update" function before rendering.
    * @param {World} world
    */
-  public render(world: World): void {
+  render(world: World): void {
     this.requestDelta = this.clock.getDelta()
 
     requestAnimationFrame(() => {
@@ -316,31 +316,31 @@ export class World {
     this.renderDelta = this.clock.getDelta()
   }
 
-  public setTimeScale(value: number): void {
+  setTimeScale(value: number): void {
     this.params.Time_Scale = value
     this.timeScaleTarget = value
   }
 
-  public add(worldEntity: IWorldEntity): void {
+  add(worldEntity: IWorldEntity): void {
     worldEntity.addToWorld(this)
     this.registerUpdatable(worldEntity)
   }
 
-  public registerUpdatable(registree: IUpdatable): void {
+  registerUpdatable(registree: IUpdatable): void {
     this.updatables.push(registree)
     this.updatables.sort((a, b) => (a.updateOrder > b.updateOrder ? 1 : -1))
   }
 
-  public remove(worldEntity: IWorldEntity): void {
+  remove(worldEntity: IWorldEntity): void {
     worldEntity.removeFromWorld(this)
     this.unregisterUpdatable(worldEntity)
   }
 
-  public unregisterUpdatable(registree: IUpdatable): void {
+  unregisterUpdatable(registree: IUpdatable): void {
     _.pull(this.updatables, registree)
   }
 
-  public loadScene(loadingManager: LoadingManager, gltf: any): void {
+  loadScene(loadingManager: LoadingManager, gltf: any): void {
     gltf.scene.traverse((child) => {
       if (child.hasOwnProperty('userData')) {
         if (child.type === 'Mesh') {
@@ -407,7 +407,7 @@ export class World {
       this.launchScenario(defaultScenarioID, loadingManager)
   }
 
-  public launchScenario(
+  launchScenario(
     scenarioID: string,
     loadingManager?: LoadingManager
   ): void {
@@ -424,7 +424,7 @@ export class World {
     }
   }
 
-  public restartScenario(): void {
+  restartScenario(): void {
     if (this.lastScenarioID !== undefined) {
       document.exitPointerLock()
       this.launchScenario(this.lastScenarioID)
@@ -433,7 +433,7 @@ export class World {
     }
   }
 
-  public clearEntities(): void {
+  clearEntities(): void {
     for (let i = 0; i < this.characters.length; i++) {
       this.remove(this.characters[i])
       i--
@@ -445,7 +445,7 @@ export class World {
     }
   }
 
-  public scrollTheTimeScale(scrollAmount: number): void {
+  scrollTheTimeScale(scrollAmount: number): void {
     // Changing time scale with scroll wheel
     const timeScaleBottomLimit = 0.003
     const timeScaleChangeSpeed = 1.3
@@ -461,7 +461,7 @@ export class World {
     }
   }
 
-  public updateControls(controls: any): void {
+  updateControls(controls: any): void {
     let html = ''
     html += '<h2 class="controls-title">Controls:</h2>'
 

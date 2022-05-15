@@ -1,23 +1,22 @@
-import * as THREE from 'three'
-import * as CANNON from 'cannon'
-
-import { Vehicle } from './vehicle'
+import { SpringSimulator } from '../physics/spring_simulation/spring-simulator'
+import { VehicleAirplaneAction } from '../types/vehicle-action'
 import { IControllable } from '../interfaces/icontrollable'
 import { IWorldEntity } from '../interfaces/iworld-entity'
-import { KeyBinding } from '../core/key-binding'
-import { SpringSimulator } from '../physics/spring_simulation/spring-simulator'
 import * as Utils from '../core/function-library'
 import { EntityType } from '../enums/entity-type'
-import { VehicleAirplaneAction } from '../types/vehicle-action'
+import { KeyBinding } from '../core/key-binding'
+import { Vehicle } from './vehicle'
+import { Euler, MathUtils, Object3D, Quaternion, Vector3 } from 'three'
+import * as CANNON from 'cannon'
 
 export class Airplane extends Vehicle implements IControllable, IWorldEntity {
-  public actions: Record<VehicleAirplaneAction, KeyBinding>
-  public entityType: EntityType = EntityType.Airplane
-  public rotor: THREE.Object3D
-  public leftAileron: THREE.Object3D
-  public rightAileron: THREE.Object3D
-  public elevators: THREE.Object3D[] = []
-  public rudder: THREE.Object3D
+  actions: Record<VehicleAirplaneAction, KeyBinding>
+  entityType: EntityType = EntityType.Airplane
+  rotor: Object3D
+  leftAileron: Object3D
+  rightAileron: Object3D
+  elevators: Object3D[] = []
+  rudder: Object3D
 
   private steeringSimulator: SpringSimulator
   private aileronSimulator: SpringSimulator
@@ -66,8 +65,8 @@ export class Airplane extends Vehicle implements IControllable, IWorldEntity {
     this.rudderSimulator = new SpringSimulator(60, 10, 0.6)
   }
 
-  public noDirectionPressed(): boolean {
-    let result =
+  noDirectionPressed(): boolean {
+    const result =
       !this.actions.throttle.isPressed &&
       !this.actions.brake.isPressed &&
       !this.actions.yawLeft.isPressed &&
@@ -78,7 +77,7 @@ export class Airplane extends Vehicle implements IControllable, IWorldEntity {
     return result
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number) {
     super.update(timeStep)
 
     // Rotors visuals
@@ -166,28 +165,28 @@ export class Airplane extends Vehicle implements IControllable, IWorldEntity {
     this.rudder.rotation.y = this.rudderSimulator.position
   }
 
-  public physicsPreStep(body: CANNON.Body, plane: Airplane): void {
-    let quat = Utils.threeQuat(body.quaternion)
-    let right = new THREE.Vector3(1, 0, 0).applyQuaternion(quat)
-    let up = new THREE.Vector3(0, 1, 0).applyQuaternion(quat)
-    let forward = new THREE.Vector3(0, 0, 1).applyQuaternion(quat)
+  physicsPreStep(body: CANNON.Body, plane: Airplane) {
+    const quat = Utils.threeQuat(body.quaternion)
+    const right = new Vector3(1, 0, 0).applyQuaternion(quat)
+    const up = new Vector3(0, 1, 0).applyQuaternion(quat)
+    const forward = new Vector3(0, 0, 1).applyQuaternion(quat)
 
     const velocity = new CANNON.Vec3().copy(this.collision.velocity)
-    let velLength1 = body.velocity.length()
+    const velLength1 = body.velocity.length()
     const currentSpeed = velocity.dot(Utils.cannonVector(forward))
 
     // Rotation controls influence
     let flightModeInfluence = currentSpeed / 10
-    flightModeInfluence = THREE.MathUtils.clamp(flightModeInfluence, 0, 1)
+    flightModeInfluence = MathUtils.clamp(flightModeInfluence, 0, 1)
 
     let lowerMassInfluence = currentSpeed / 10
-    lowerMassInfluence = THREE.MathUtils.clamp(lowerMassInfluence, 0, 1)
+    lowerMassInfluence = MathUtils.clamp(lowerMassInfluence, 0, 1)
     this.collision.mass = 50 * (1 - lowerMassInfluence * 0.6)
 
     // Rotation stabilization
-    let lookVelocity = body.velocity.clone()
+    const lookVelocity = body.velocity.clone()
     lookVelocity.normalize()
-    let rotStabVelocity = new THREE.Quaternion().setFromUnitVectors(
+    const rotStabVelocity = new Quaternion().setFromUnitVectors(
       forward,
       Utils.threeVector(lookVelocity)
     )
@@ -195,12 +194,12 @@ export class Airplane extends Vehicle implements IControllable, IWorldEntity {
     rotStabVelocity.y *= 0.3
     rotStabVelocity.z *= 0.3
     rotStabVelocity.w *= 0.3
-    let rotStabEuler = new THREE.Euler().setFromQuaternion(rotStabVelocity)
+    const rotStabEuler = new Euler().setFromQuaternion(rotStabVelocity)
 
-    let rotStabInfluence = THREE.MathUtils.clamp(velLength1 - 1, 0, 0.1) // Only with speed greater than 1 UPS
+    let rotStabInfluence = MathUtils.clamp(velLength1 - 1, 0, 0.1) // Only with speed greater than 1 UPS
     rotStabInfluence *=
       this.rayCastVehicle.numWheelsOnGround > 0 && currentSpeed < 0 ? 0 : 1 // Reverse fix
-    let loopFix = this.actions.throttle.isPressed && currentSpeed > 0 ? 0 : 1
+    const loopFix = this.actions.throttle.isPressed && currentSpeed > 0 ? 0 : 1
 
     body.angularVelocity.x += rotStabEuler.x * rotStabInfluence * loopFix
     body.angularVelocity.y += rotStabEuler.y * rotStabInfluence
@@ -290,7 +289,7 @@ export class Airplane extends Vehicle implements IControllable, IWorldEntity {
     // document.getElementById('car-debug').innerHTML += '<br>' + 'Power output: ' + Utils.round(velLength1 * this.lastDrag, 2) + '';
 
     // Drag
-    let velLength2 = body.velocity.length()
+    const velLength2 = body.velocity.length()
     const drag = Math.pow(velLength2, 1) * 0.003 * this.enginePower
     body.velocity.x -= body.velocity.x * drag
     body.velocity.y -= body.velocity.y * drag
@@ -299,7 +298,7 @@ export class Airplane extends Vehicle implements IControllable, IWorldEntity {
 
     // Lift
     let lift = Math.pow(velLength2, 1) * 0.005 * this.enginePower
-    lift = THREE.MathUtils.clamp(lift, 0, 0.05)
+    lift = MathUtils.clamp(lift, 0, 0.05)
     body.velocity.x += up.x * lift
     body.velocity.y += up.y * lift
     body.velocity.z += up.z * lift
@@ -311,24 +310,24 @@ export class Airplane extends Vehicle implements IControllable, IWorldEntity {
     // document.getElementById('car-debug').innerHTML += '<br>' + 'Lift: ' + Utils.round(lift, 3) + '';
 
     // Angular damping
-    body.angularVelocity.x = THREE.MathUtils.lerp(
+    body.angularVelocity.x = MathUtils.lerp(
       body.angularVelocity.x,
       body.angularVelocity.x * 0.98,
       flightModeInfluence
     )
-    body.angularVelocity.y = THREE.MathUtils.lerp(
+    body.angularVelocity.y = MathUtils.lerp(
       body.angularVelocity.y,
       body.angularVelocity.y * 0.98,
       flightModeInfluence
     )
-    body.angularVelocity.z = THREE.MathUtils.lerp(
+    body.angularVelocity.z = MathUtils.lerp(
       body.angularVelocity.z,
       body.angularVelocity.z * 0.98,
       flightModeInfluence
     )
   }
 
-  public onInputChange(): void {
+  onInputChange() {
     super.onInputChange()
 
     const brakeForce = 100
@@ -350,7 +349,7 @@ export class Airplane extends Vehicle implements IControllable, IWorldEntity {
     }
   }
 
-  public readAirplaneData(gltf: any): void {
+  readAirplaneData(gltf: any) {
     gltf.scene.traverse((child) => {
       if (child.hasOwnProperty('userData')) {
         if (child.userData.hasOwnProperty('data')) {
@@ -377,7 +376,7 @@ export class Airplane extends Vehicle implements IControllable, IWorldEntity {
     })
   }
 
-  public inputReceiverInit(): void {
+  inputReceiverInit() {
     super.inputReceiverInit()
 
     this.world.updateControls([

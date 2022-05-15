@@ -1,9 +1,9 @@
-import * as CANNON from 'cannon';
-import { Vehicle } from './vehicle';
 import { IControllable } from '../interfaces/icontrollable';
-import { KeyBinding } from '../core/key-binding';
-import { EntityType } from '../enums/entity-type';
 import { VehicleCarAction } from '../types/vehicle-action';
+import { EntityType } from '../enums/entity-type';
+import { KeyBinding } from '../core/key-binding';
+import { Vehicle } from './vehicle';
+import * as CANNON from 'cannon';
 export declare class Car extends Vehicle implements IControllable {
     actions: Record<VehicleCarAction, KeyBinding>;
     entityType: EntityType;

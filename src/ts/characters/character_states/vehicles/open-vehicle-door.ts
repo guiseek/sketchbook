@@ -1,29 +1,27 @@
-import * as THREE from 'three'
-import { CharacterStateBase } from '../_stateLibrary'
-import { Character } from '../../character'
+import { SpringSimulator } from '../../../physics/spring_simulation/spring-simulator'
 import { VehicleSeat } from '../../../vehicles/vehicle-seat'
+import * as Utils from '../../../core/function-library'
+import { CharacterStateBase } from '../_stateLibrary'
+import { EnteringVehicle } from './entering-vehicle'
+import { Character } from '../../character'
 import { Side } from '../../../enums/side'
 import { Idle } from '../idle'
-import { EnteringVehicle } from './entering-vehicle'
-import * as Utils from '../../../core/function-library'
-import { SpringSimulator } from '../../../physics/spring_simulation/spring-simulator'
+import { Vector3, Quaternion, Object3D } from 'three'
 
 export class OpenVehicleDoor extends CharacterStateBase {
-  private seat: VehicleSeat
-  private entryPoint: THREE.Object3D
   private hasOpenedDoor: boolean = false
 
-  private startPosition: THREE.Vector3 = new THREE.Vector3()
-  private endPosition: THREE.Vector3 = new THREE.Vector3()
-  private startRotation: THREE.Quaternion = new THREE.Quaternion()
-  private endRotation: THREE.Quaternion = new THREE.Quaternion()
+  private startPosition = new Vector3()
+  private endPosition = new Vector3()
+  private startRotation = new Quaternion()
+  private endRotation = new Quaternion()
 
   private factorSimluator: SpringSimulator
 
   constructor(
     character: Character,
-    seat: VehicleSeat,
-    entryPoint: THREE.Object3D
+    public seat: VehicleSeat,
+    public entryPoint: Object3D
   ) {
     super(character)
 
@@ -43,7 +41,7 @@ export class OpenVehicleDoor extends CharacterStateBase {
     this.character.setPhysicsEnabled(false)
 
     this.character.setPhysicsEnabled(false)
-    ;(this.seat.vehicle as unknown as THREE.Object3D).attach(this.character)
+    ;(this.seat.vehicle as unknown as Object3D).attach(this.character)
 
     this.startPosition.copy(this.character.position)
     this.endPosition.copy(this.entryPoint.position)
@@ -56,7 +54,7 @@ export class OpenVehicleDoor extends CharacterStateBase {
     this.factorSimluator.target = 1
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number) {
     super.update(timeStep)
 
     if (this.timer > 0.3 && !this.hasOpenedDoor) {
@@ -78,14 +76,14 @@ export class OpenVehicleDoor extends CharacterStateBase {
     } else {
       this.factorSimluator.simulate(timeStep)
 
-      let lerpPosition = new THREE.Vector3().lerpVectors(
+      let lerpPosition = new Vector3().lerpVectors(
         this.startPosition,
         this.endPosition,
         this.factorSimluator.position
       )
       this.character.setPosition(lerpPosition.x, lerpPosition.y, lerpPosition.z)
 
-      THREE.Quaternion.slerp(
+      Quaternion.slerp(
         this.startRotation,
         this.endRotation,
         this.character.quaternion,

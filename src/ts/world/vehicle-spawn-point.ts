@@ -1,36 +1,31 @@
-import * as THREE from 'three'
-import { ISpawnPoint } from '../interfaces/ispawn-point'
-import { World } from './World'
-import { Helicopter } from '../vehicles/helicopter'
-import { Airplane } from '../vehicles/airplane'
-import { Car } from '../vehicles/car'
-import * as Utils from '../core/function-library'
-import { Vehicle } from '../vehicles/vehicle'
-import { Character } from '../characters/character'
 import { FollowPath } from '../characters/character_ai/follow-path'
 import { LoadingManager } from '../core/loading-manager'
-import { IWorldEntity } from '../interfaces/iworld-entity'
+import { ISpawnPoint } from '../interfaces/ispawn-point'
+import { Helicopter } from '../vehicles/helicopter'
+import { Character } from '../characters/character'
+import * as Utils from '../core/function-library'
+import { Airplane } from '../vehicles/airplane'
+import { Vehicle } from '../vehicles/vehicle'
+import { Car } from '../vehicles/car'
+import { World } from './World'
+import { Object3D, Vector3, Quaternion } from 'three'
 
 export class VehicleSpawnPoint implements ISpawnPoint {
-  public type: string
-  public driver: string
-  public firstAINode: string
+  type: string
+  driver: string
+  firstAINode: string
 
-  private object: THREE.Object3D
+  constructor(private object: Object3D) {}
 
-  constructor(object: THREE.Object3D) {
-    this.object = object
-  }
-
-  public spawn(loadingManager: LoadingManager, world: World): void {
+  spawn(loadingManager: LoadingManager, world: World): void {
     loadingManager.loadGLTF(
       'build/assets/' + this.type + '.glb',
       (model: any) => {
         let vehicle: Vehicle = this.getNewVehicleByType(model, this.type)
         vehicle.spawnPoint = this.object
 
-        let worldPos = new THREE.Vector3()
-        let worldQuat = new THREE.Quaternion()
+        let worldPos = new Vector3()
+        let worldQuat = new Quaternion()
         this.object.getWorldPosition(worldPos)
         this.object.getWorldQuaternion(worldQuat)
 

@@ -1,11 +1,11 @@
+import { Character } from '../character'
 import {
   CharacterStateBase,
-  EndWalk,
-  Idle,
   JumpRunning,
+  EndWalk,
   Sprint,
+  Idle,
 } from './_stateLibrary'
-import { Character } from '../character'
 
 export class Walk extends CharacterStateBase {
   constructor(character: Character) {
@@ -16,7 +16,7 @@ export class Walk extends CharacterStateBase {
     this.playAnimation('run', 0.1)
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number) {
     super.update(timeStep)
 
     this.character.setCameraRelativeOrientationTarget()
@@ -24,7 +24,7 @@ export class Walk extends CharacterStateBase {
     this.fallInAir()
   }
 
-  public onInputChange(): void {
+  onInputChange() {
     super.onInputChange()
 
     if (this.noDirection()) {

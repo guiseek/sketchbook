@@ -1,14 +1,12 @@
-import { Path } from './path'
 import { Object3D } from 'three'
+import { Path } from './path'
 
 export class PathNode {
-  public object: Object3D
-  public path: Path
-  public nextNode: PathNode
-  public previousNode: PathNode
+  object: Object3D
+  nextNode: PathNode
+  previousNode: PathNode
 
-  constructor(child: THREE.Object3D, path: Path) {
+  constructor(child: THREE.Object3D, public path: Path) {
     this.object = child
-    this.path = path
   }
 }

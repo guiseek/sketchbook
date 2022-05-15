@@ -1,26 +1,22 @@
 import { ISpawnPoint } from '../interfaces/ispawn-point'
-import * as THREE from 'three'
-import { World } from './World'
-import { Character } from '../characters/character'
 import { LoadingManager } from '../core/loading-manager'
+import { Character } from '../characters/character'
 import * as Utils from '../core/function-library'
+import { Object3D, Vector3 } from 'three'
+import { World } from './World'
 
 export class CharacterSpawnPoint implements ISpawnPoint {
-  private object: THREE.Object3D
+  constructor(public object: Object3D) {}
 
-  constructor(object: THREE.Object3D) {
-    this.object = object
-  }
-
-  public spawn(loadingManager: LoadingManager, world: World): void {
+  spawn(loadingManager: LoadingManager, world: World) {
     loadingManager.loadGLTF('build/assets/boxman.glb', (model) => {
-      let player = new Character(model)
+      const player = new Character(model)
 
-      let worldPos = new THREE.Vector3()
+      const worldPos = new Vector3()
       this.object.getWorldPosition(worldPos)
       player.setPosition(worldPos.x, worldPos.y, worldPos.z)
 
-      let forward = Utils.getForward(this.object)
+      const forward = Utils.getForward(this.object)
       player.setOrientation(forward, true)
 
       world.add(player)

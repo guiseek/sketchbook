@@ -1,13 +1,13 @@
-import * as THREE from 'three'
-import { SimulatorBase } from './simulator-base'
 import { SimulationFrame } from './simulation-frame'
 import { spring } from '../../core/function-library'
+import { SimulatorBase } from './simulator-base'
+import { MathUtils } from 'three'
 
 export class SpringSimulator extends SimulatorBase {
-  public position: number
-  public velocity: number
-  public target: number
-  public cache: SimulationFrame[]
+  position: number
+  velocity: number
+  target: number
+  cache: SimulationFrame[]
 
   constructor(
     fps: number,
@@ -37,17 +37,17 @@ export class SpringSimulator extends SimulatorBase {
    * Advances the simulation by given time step
    * @param {number} timeStep
    */
-  public simulate(timeStep: number): void {
+  simulate(timeStep: number) {
     // Generate new frames
     this.generateFrames(timeStep)
 
     // Return values interpolated between cached frames
-    this.position = THREE.MathUtils.lerp(
+    this.position = MathUtils.lerp(
       this.cache[0].position,
       this.cache[1].position,
       this.offset / this.frameTime
     )
-    this.velocity = THREE.MathUtils.lerp(
+    this.velocity = MathUtils.lerp(
       this.cache[0].velocity,
       this.cache[1].velocity,
       this.offset / this.frameTime
@@ -57,7 +57,7 @@ export class SpringSimulator extends SimulatorBase {
   /**
    * Gets another simulation frame
    */
-  public getFrame(isLastFrame: boolean): SimulationFrame {
+  getFrame(isLastFrame: boolean): SimulationFrame {
     return spring(
       this.lastFrame().position,
       this.target,

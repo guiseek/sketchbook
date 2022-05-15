@@ -1,12 +1,12 @@
-import {
-  CharacterStateBase,
-  Idle,
-  JumpIdle,
-  Sprint,
-  Walk,
-} from './_stateLibrary'
 import { ICharacterState } from '../../interfaces/icharacter-state'
 import { Character } from '../character'
+import {
+  CharacterStateBase,
+  JumpIdle,
+  Sprint,
+  Idle,
+  Walk,
+} from './_stateLibrary'
 
 export class EndWalk extends CharacterStateBase implements ICharacterState {
   constructor(character: Character) {
@@ -16,7 +16,7 @@ export class EndWalk extends CharacterStateBase implements ICharacterState {
     this.animationLength = character.setAnimation('stop', 0.1)
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number) {
     super.update(timeStep)
 
     if (this.animationEnded(timeStep)) {
@@ -26,7 +26,7 @@ export class EndWalk extends CharacterStateBase implements ICharacterState {
     this.fallInAir()
   }
 
-  public onInputChange(): void {
+  onInputChange() {
     super.onInputChange()
 
     if (this.character.actions.jump.justPressed) {

@@ -182,7 +182,7 @@ export function getSignedAngleBetweenVectors(
   let angle = this.getAngleBetweenVectors(v1, v2, dotTreshold)
 
   // Get vector pointing up or down
-  let cross = new Vector3().crossVectors(v1, v2)
+  const cross = new Vector3().crossVectors(v1, v2)
   // Compare cross with normal to find out direction
   if (normal.dot(cross) < 0) {
     angle = -angle
@@ -208,9 +208,9 @@ export function setDefaults(options: {}, defaults: {}): {} {
 }
 
 export function getGlobalProperties(prefix: string = ''): any[] {
-  let keyValues = []
-  let global = window // window for browser environments
-  for (let prop in global) {
+  const keyValues = []
+  const global = window // window for browser environments
+  for (const prop in global) {
     // check the prefix
     if (prop.indexOf(prefix) === 0) {
       keyValues.push(prop /*+ "=" + global[prop]*/)
@@ -231,7 +231,7 @@ export function spring(
   velocity += acceleration
   velocity *= damping
 
-  let position = source + velocity
+  const position = source + velocity
 
   return new SimulationFrame(position, velocity)
 }
@@ -242,7 +242,7 @@ export function springV(
   velocity: Vector3,
   mass: number,
   damping: number
-): void {
+) {
   let acceleration = new Vector3().subVectors(dest, source)
   acceleration.divideScalar(mass)
   velocity.add(acceleration)
@@ -266,7 +266,7 @@ export function cannonQuat(quat: Quaternion): CANNON.Quaternion {
   return new CANNON.Quaternion(quat.x, quat.y, quat.z, quat.w)
 }
 
-export function setupMeshProperties(child: any): void {
+export function setupMeshProperties(child: any) {
   child.castShadow = true
   child.receiveShadow = true
 

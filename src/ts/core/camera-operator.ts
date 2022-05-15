@@ -8,39 +8,35 @@ import { World } from '../world/World'
 import _ = require('lodash')
 
 export class CameraOperator implements IInputReceiver, IUpdatable {
-  public updateOrder: number = 4
+  updateOrder: number = 4
 
-  public world: World
-  public camera: Camera
-  public target: Vector3
-  public sensitivity: Vector2
-  public radius: number = 1
-  public theta: number
-  public phi: number
-  public onMouseDownPosition: Vector2
-  public onMouseDownTheta: any
-  public onMouseDownPhi: any
-  public targetRadius: number = 1
+  target: Vector3
+  sensitivity: Vector2
+  radius: number = 1
+  theta: number
+  phi: number
+  onMouseDownPosition: Vector2
+  onMouseDownTheta: any
+  onMouseDownPhi: any
+  targetRadius: number = 1
 
-  public movementSpeed: number
-  public actions: { [action: string]: KeyBinding }
+  movementSpeed: number
+  actions: { [action: string]: KeyBinding }
 
-  public upVelocity: number = 0
-  public forwardVelocity: number = 0
-  public rightVelocity: number = 0
+  upVelocity: number = 0
+  forwardVelocity: number = 0
+  rightVelocity: number = 0
 
-  public followMode: boolean = false
+  followMode: boolean = false
 
-  public characterCaller: Character
+  characterCaller: Character
 
   constructor(
-    world: World,
-    camera: Camera,
+    public world: World,
+    public camera: Camera,
     sensitivityX: number = 1,
     sensitivityY: number = sensitivityX * 0.8
   ) {
-    this.world = world
-    this.camera = camera
     this.target = new Vector3()
     this.sensitivity = new Vector2(sensitivityX, sensitivityY)
 
@@ -66,28 +62,25 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
     world.registerUpdatable(this)
   }
 
-  public setSensitivity(
-    sensitivityX: number,
-    sensitivityY: number = sensitivityX
-  ): void {
+  setSensitivity(sensitivityX: number, sensitivityY: number = sensitivityX) {
     this.sensitivity = new Vector2(sensitivityX, sensitivityY)
   }
 
-  public setRadius(value: number, instantly: boolean = false): void {
+  setRadius(value: number, instantly: boolean = false) {
     this.targetRadius = Math.max(0.001, value)
     if (instantly === true) {
       this.radius = value
     }
   }
 
-  public move(deltaX: number, deltaY: number): void {
+  move(deltaX: number, deltaY: number) {
     this.theta -= deltaX * (this.sensitivity.x / 2)
     this.theta %= 360
     this.phi += deltaY * (this.sensitivity.y / 2)
     this.phi = Math.min(85, Math.max(-85, this.phi))
   }
 
-  public update(timeScale: number): void {
+  update(timeScale: number) {
     if (this.followMode === true) {
       this.camera.position.y = MathUtils.clamp(
         this.camera.position.y,
@@ -95,7 +88,7 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
         Number.POSITIVE_INFINITY
       )
       this.camera.lookAt(this.target)
-      let newPos = this.target
+      const newPos = this.target
         .clone()
         .add(
           new Vector3()
@@ -126,11 +119,7 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
     }
   }
 
-  public handleKeyboardEvent(
-    event: KeyboardEvent,
-    code: string,
-    pressed: boolean
-  ): void {
+  handleKeyboardEvent(event: KeyboardEvent, code: string, pressed: boolean) {
     // Free camera
     if (code === 'KeyC' && pressed === true && event.shiftKey === true) {
       if (this.characterCaller !== undefined) {
@@ -150,15 +139,11 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
     }
   }
 
-  public handleMouseWheel(event: WheelEvent, value: number): void {
+  handleMouseWheel(event: WheelEvent, value: number) {
     this.world.scrollTheTimeScale(value)
   }
 
-  public handleMouseButton(
-    event: MouseEvent,
-    code: string,
-    pressed: boolean
-  ): void {
+  handleMouseButton(event: MouseEvent, code: string, pressed: boolean) {
     for (const action in this.actions) {
       if (this.actions.hasOwnProperty(action)) {
         const binding = this.actions[action]
@@ -170,15 +155,11 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
     }
   }
 
-  public handleMouseMove(
-    event: MouseEvent,
-    deltaX: number,
-    deltaY: number
-  ): void {
+  handleMouseMove(event: MouseEvent, deltaX: number, deltaY: number) {
     this.move(deltaX, deltaY)
   }
 
-  public inputReceiverInit(): void {
+  inputReceiverInit() {
     this.target.copy(this.camera.position)
     this.setRadius(0, true)
     // this.world.dirLight.target = this.world.camera;
@@ -203,9 +184,9 @@ export class CameraOperator implements IInputReceiver, IUpdatable {
     ])
   }
 
-  public inputReceiverUpdate(timeStep: number): void {
+  inputReceiverUpdate(timeStep: number) {
     // Set fly speed
-    let speed =
+    const speed =
       this.movementSpeed *
       (this.actions.fast.isPressed ? timeStep * 600 : timeStep * 60)
 

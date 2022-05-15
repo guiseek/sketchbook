@@ -1,23 +1,20 @@
-import * as THREE from 'three'
-
-import { World } from './World'
+import { ShaderMaterial, UniformsUtils, Vector3 } from 'three'
 import { WaterShader } from '../../lib/shaders/WaterShader'
 import { IUpdatable } from '../interfaces/iupdatable'
+import { World } from './World'
 
 export class Ocean implements IUpdatable {
-  public updateOrder: number = 10
-  public material: THREE.ShaderMaterial
+  updateOrder = 10
+  material: ShaderMaterial
 
-  private world: World
-
-  constructor(object: any, world: World) {
+  constructor(object: any, private world: World) {
     this.world = world
 
-    let uniforms = THREE.UniformsUtils.clone(WaterShader.uniforms)
+    let uniforms = UniformsUtils.clone(WaterShader.uniforms)
     uniforms.iResolution.value.x = window.innerWidth
     uniforms.iResolution.value.y = window.innerHeight
 
-    this.material = new THREE.ShaderMaterial({
+    this.material = new ShaderMaterial({
       uniforms: uniforms,
       fragmentShader: WaterShader.fragmentShader,
       vertexShader: WaterShader.vertexShader,
@@ -27,10 +24,10 @@ export class Ocean implements IUpdatable {
     object.material.transparent = true
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number): void {
     this.material.uniforms.cameraPos.value.copy(this.world.camera.position)
     this.material.uniforms.lightDir.value.copy(
-      new THREE.Vector3().copy(this.world.sky.sunPosition).normalize()
+      new Vector3().copy(this.world.sky.sunPosition).normalize()
     )
     this.material.uniforms.iGlobalTime.value += timeStep
   }

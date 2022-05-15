@@ -19,7 +19,7 @@ export class IdleRotateRight
     this.playAnimation('rotate_right', 0.1)
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number) {
     super.update(timeStep)
 
     if (this.animationEnded(timeStep)) {
@@ -29,7 +29,7 @@ export class IdleRotateRight
     this.fallInAir()
   }
 
-  public onInputChange(): void {
+  onInputChange() {
     super.onInputChange()
 
     if (this.character.actions.jump.justPressed) {

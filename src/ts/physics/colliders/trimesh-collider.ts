@@ -1,20 +1,19 @@
-import * as CANNON from 'cannon'
-import * as THREE from 'three'
-import * as Utils from '../../core/function-library'
-import { ICollider } from '../../interfaces/icollider'
-import { Object3D } from 'three'
 import { threeToCannon } from '../../../lib/utils/three-to-cannon'
+import { ICollider } from '../../interfaces/icollider'
+import * as Utils from '../../core/function-library'
+import { Object3D } from 'three'
+import * as CANNON from 'cannon'
 
 export class TrimeshCollider implements ICollider {
-  public mesh: any
-  public options: any
-  public body: CANNON.Body
-  public debugModel: any
+  mesh: any
+  options: any
+  body: CANNON.Body
+  debugModel: any
 
   constructor(mesh: Object3D, options: any) {
     this.mesh = mesh.clone()
 
-    let defaults = {
+    const defaults = {
       mass: 0,
       position: mesh.position,
       rotation: mesh.quaternion,
@@ -23,15 +22,15 @@ export class TrimeshCollider implements ICollider {
     options = Utils.setDefaults(options, defaults)
     this.options = options
 
-    let mat = new CANNON.Material('triMat')
+    const mat = new CANNON.Material('triMat')
     mat.friction = options.friction
     // mat.restitution = 0.7;
 
-    let shape = threeToCannon(this.mesh, { type: threeToCannon.Type.MESH })
+    const shape = threeToCannon(this.mesh, { type: threeToCannon.Type.MESH })
     // shape['material'] = mat;
 
     // Add phys sphere
-    let physBox = new CANNON.Body({
+    const physBox = new CANNON.Body({
       mass: options.mass,
       position: options.position,
       quaternion: options.rotation,

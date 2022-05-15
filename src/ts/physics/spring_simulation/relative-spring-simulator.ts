@@ -1,14 +1,14 @@
-import * as THREE from 'three'
-import { SimulatorBase } from './simulator-base'
-import { SimulationFrame } from './simulation-frame'
 import { spring } from '../../core/function-library'
+import { SimulationFrame } from './simulation-frame'
+import { SimulatorBase } from './simulator-base'
+import { MathUtils } from 'three'
 
 export class RelativeSpringSimulator extends SimulatorBase {
-  public position: number
-  public velocity: number
-  public target: number
-  public lastLerp: number
-  public cache: SimulationFrame[]
+  position: number
+  velocity: number
+  target: number
+  lastLerp: number
+  cache: SimulationFrame[]
 
   constructor(
     fps: number,
@@ -44,12 +44,12 @@ export class RelativeSpringSimulator extends SimulatorBase {
    * Advances the simulation by given time step
    * @param {number} timeStep
    */
-  public simulate(timeStep: number): void {
+  simulate(timeStep: number): void {
     this.generateFrames(timeStep)
 
     // SpringR lerping
     // Lerp from 0 to next frame
-    let lerp = THREE.MathUtils.lerp(
+    let lerp = MathUtils.lerp(
       0,
       this.cache[1].position,
       this.offset / this.frameTime
@@ -59,7 +59,7 @@ export class RelativeSpringSimulator extends SimulatorBase {
     this.position = lerp - this.lastLerp
     this.lastLerp = lerp
 
-    this.velocity = THREE.MathUtils.lerp(
+    this.velocity = MathUtils.lerp(
       this.cache[0].velocity,
       this.cache[1].velocity,
       this.offset / this.frameTime
@@ -69,7 +69,7 @@ export class RelativeSpringSimulator extends SimulatorBase {
   /**
    * Gets another simulation frame
    */
-  public getFrame(isLastFrame: boolean): SimulationFrame {
+  getFrame(isLastFrame: boolean): SimulationFrame {
     let newFrame = Object.assign({}, this.lastFrame())
 
     if (isLastFrame) {

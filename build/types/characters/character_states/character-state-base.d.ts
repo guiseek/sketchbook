@@ -1,5 +1,5 @@
-import { Character } from '../character';
 import { ICharacterState } from '../../interfaces/icharacter-state';
+import { Character } from '../character';
 export declare abstract class CharacterStateBase implements ICharacterState {
     character: Character;
     timer: number;

@@ -5,9 +5,9 @@ import { Character } from '../characters/character';
 import { KeyBinding } from './key-binding';
 import { World } from '../world/World';
 export declare class CameraOperator implements IInputReceiver, IUpdatable {
-    updateOrder: number;
     world: World;
     camera: Camera;
+    updateOrder: number;
     target: Vector3;
     sensitivity: Vector2;
     radius: number;

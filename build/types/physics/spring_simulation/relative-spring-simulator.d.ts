@@ -1,5 +1,5 @@
-import { SimulatorBase } from './simulator-base';
 import { SimulationFrame } from './simulation-frame';
+import { SimulatorBase } from './simulator-base';
 export declare class RelativeSpringSimulator extends SimulatorBase {
     position: number;
     velocity: number;

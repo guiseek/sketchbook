@@ -1,15 +1,23 @@
 import { SkyShader } from '../../lib/shaders/SkyShader'
-import * as THREE from 'three'
-import { World } from './World'
-import { EntityType } from '../enums/entity-type'
 import { IUpdatable } from '../interfaces/iupdatable'
 import { default as CSM } from 'three-csm'
+import { World } from './World'
+import {
+  SphereBufferGeometry,
+  HemisphereLight,
+  ShaderMaterial,
+  UniformsUtils,
+  BackSide,
+  Object3D,
+  Vector3,
+  Mesh,
+} from 'three'
 
-export class Sky extends THREE.Object3D implements IUpdatable {
-  public updateOrder: number = 5
+export class Sky extends Object3D implements IUpdatable {
+  updateOrder = 5
 
-  public sunPosition: THREE.Vector3 = new THREE.Vector3()
-  public csm: CSM
+  sunPosition = new Vector3()
+  csm: CSM
 
   set theta(value: number) {
     this._theta = value
@@ -22,40 +30,36 @@ export class Sky extends THREE.Object3D implements IUpdatable {
     this.refreshHemiIntensity()
   }
 
-  private _phi: number = 50
-  private _theta: number = 145
+  private _phi = 50
+  private _theta = 145
 
-  private hemiLight: THREE.HemisphereLight
-  private maxHemiIntensity: number = 0.9
-  private minHemiIntensity: number = 0.3
+  private hemiLight: HemisphereLight
+  private maxHemiIntensity = 0.9
+  private minHemiIntensity = 0.3
 
-  private skyMesh: THREE.Mesh
-  private skyMaterial: THREE.ShaderMaterial
+  private skyMesh: Mesh
+  private skyMaterial: ShaderMaterial
 
-  private world: World
-
-  constructor(world: World) {
+  constructor(private world: World) {
     super()
 
-    this.world = world
-
     // Sky material
-    this.skyMaterial = new THREE.ShaderMaterial({
-      uniforms: THREE.UniformsUtils.clone(SkyShader.uniforms),
+    this.skyMaterial = new ShaderMaterial({
+      uniforms: UniformsUtils.clone(SkyShader.uniforms),
       fragmentShader: SkyShader.fragmentShader,
       vertexShader: SkyShader.vertexShader,
-      side: THREE.BackSide,
+      side: BackSide,
     })
 
     // Mesh
-    this.skyMesh = new THREE.Mesh(
-      new THREE.SphereBufferGeometry(1000, 24, 12),
+    this.skyMesh = new Mesh(
+      new SphereBufferGeometry(1000, 24, 12),
       this.skyMaterial
     )
     this.attach(this.skyMesh)
 
     // Ambient light
-    this.hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 1.0)
+    this.hemiLight = new HemisphereLight(0xffffff, 0xffffff, 1.0)
     this.refreshHemiIntensity()
     this.hemiLight.color.setHSL(0.59, 0.4, 0.6)
     this.hemiLight.groundColor.setHSL(0.095, 0.2, 0.75)
@@ -73,7 +77,7 @@ export class Sky extends THREE.Object3D implements IUpdatable {
     // };
 
     // Legacy
-    let splitsCallback = (amount, near, far) => {
+    const splitsCallback = (amount: number, near: number, far: number) => {
       let arr = []
 
       for (let i = amount - 1; i >= 0; i--) {
@@ -102,19 +106,19 @@ export class Sky extends THREE.Object3D implements IUpdatable {
     world.registerUpdatable(this)
   }
 
-  public update(timeScale: number): void {
+  update(timeScale: number) {
     this.position.copy(this.world.camera.position)
     this.refreshSunPosition()
 
     this.csm.update(this.world.camera.matrix)
-    this.csm.lightDirection = new THREE.Vector3(
+    this.csm.lightDirection = new Vector3(
       -this.sunPosition.x,
       -this.sunPosition.y,
       -this.sunPosition.z
     ).normalize()
   }
 
-  public refreshSunPosition(): void {
+  refreshSunPosition() {
     const sunDistance = 10
 
     this.sunPosition.x =
@@ -131,7 +135,7 @@ export class Sky extends THREE.Object3D implements IUpdatable {
     this.skyMaterial.uniforms.cameraPos.value.copy(this.world.camera.position)
   }
 
-  public refreshHemiIntensity(): void {
+  refreshHemiIntensity() {
     this.hemiLight.intensity =
       this.minHemiIntensity +
       Math.pow(1 - Math.abs(this._phi - 90) / 90, 0.25) *

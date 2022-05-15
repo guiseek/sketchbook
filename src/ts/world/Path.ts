@@ -1,7 +1,7 @@
 import { PathNode } from './path-node'
 
 export class Path {
-  public nodes: { [nodeName: string]: PathNode } = {}
+  nodes: { [nodeName: string]: PathNode } = {}
   private rootNode: THREE.Object3D
 
   constructor(root: THREE.Object3D) {
@@ -14,7 +14,7 @@ export class Path {
     this.connectNodes()
   }
 
-  public addNode(child: any): void {
+  addNode(child: any) {
     if (
       child.hasOwnProperty('userData') &&
       child.userData.hasOwnProperty('data')
@@ -26,7 +26,7 @@ export class Path {
     }
   }
 
-  public connectNodes(): void {
+  connectNodes() {
     for (const nodeName in this.nodes) {
       if (this.nodes.hasOwnProperty(nodeName)) {
         const node = this.nodes[nodeName]

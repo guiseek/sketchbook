@@ -15,13 +15,13 @@ export class Sprint extends CharacterStateBase {
     this.playAnimation('sprint', 0.1)
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number) {
     super.update(timeStep)
     this.character.setCameraRelativeOrientationTarget()
     this.fallInAir()
   }
 
-  public onInputChange(): void {
+  onInputChange() {
     super.onInputChange()
 
     if (!this.character.actions.run.isPressed) {

@@ -1,20 +1,18 @@
-import * as CANNON from 'cannon'
-import * as THREE from 'three'
-import * as Utils from '../../core/function-library'
 import { ICollider } from '../../interfaces/icollider'
-import { Mesh, Vector3 } from 'three'
-import { Object3D } from 'three'
+import * as Utils from '../../core/function-library'
+import { Geometry, Object3D, Vector3 } from 'three'
+import * as CANNON from 'cannon'
 
 export class ConvexCollider implements ICollider {
-  public mesh: any
-  public options: any
-  public body: CANNON.Body
-  public debugModel: any
+  mesh: any
+  options: any
+  body: CANNON.Body
+  debugModel: any
 
   constructor(mesh: Object3D, options: any) {
     this.mesh = mesh.clone()
 
-    let defaults = {
+    const defaults = {
       mass: 0,
       position: mesh.position,
       friction: 0.3,
@@ -22,29 +20,27 @@ export class ConvexCollider implements ICollider {
     options = Utils.setDefaults(options, defaults)
     this.options = options
 
-    let mat = new CANNON.Material('convMat')
+    const mat = new CANNON.Material('convMat')
     mat.friction = options.friction
     // mat.restitution = 0.7;
 
     if (this.mesh.geometry.isBufferGeometry) {
-      this.mesh.geometry = new THREE.Geometry().fromBufferGeometry(
-        this.mesh.geometry
-      )
+      this.mesh.geometry = new Geometry().fromBufferGeometry(this.mesh.geometry)
     }
 
-    let cannonPoints = this.mesh.geometry.vertices.map((v: Vector3) => {
+    const cannonPoints = this.mesh.geometry.vertices.map((v: Vector3) => {
       return new CANNON.Vec3(v.x, v.y, v.z)
     })
 
-    let cannonFaces = this.mesh.geometry.faces.map((f: any) => {
+    const cannonFaces = this.mesh.geometry.faces.map((f: any) => {
       return [f.a, f.b, f.c]
     })
 
-    let shape = new CANNON.ConvexPolyhedron(cannonPoints, cannonFaces)
+    const shape = new CANNON.ConvexPolyhedron(cannonPoints, cannonFaces)
     // shape.material = mat;
 
     // Add phys sphere
-    let physBox = new CANNON.Body({
+    const physBox = new CANNON.Body({
       mass: options.mass,
       position: options.position,
       shape,

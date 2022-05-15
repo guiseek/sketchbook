@@ -1,10 +1,10 @@
-import * as THREE from 'three';
-import { World } from './World';
+import { ShaderMaterial } from 'three';
 import { IUpdatable } from '../interfaces/iupdatable';
+import { World } from './World';
 export declare class Ocean implements IUpdatable {
-    updateOrder: number;
-    material: THREE.ShaderMaterial;
     private world;
+    updateOrder: number;
+    material: ShaderMaterial;
     constructor(object: any, world: World);
     update(timeStep: number): void;
 }

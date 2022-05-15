@@ -1,23 +1,21 @@
-import * as THREE from 'three'
-import * as Utils from '../../../core/function-library'
-
-import { CharacterStateBase } from '../_stateLibrary'
-import { Character } from '../../character'
-import { VehicleSeat } from '../../../vehicles/vehicle-seat'
 import { IControllable } from '../../../interfaces/icontrollable'
-import { Vehicle } from 'src/ts/vehicles/vehicle'
+import { VehicleSeat } from '../../../vehicles/vehicle-seat'
+import * as Utils from '../../../core/function-library'
+import { CharacterStateBase } from '../_stateLibrary'
+import { Vehicle } from '../../../vehicles/vehicle'
+import { Character } from '../../character'
+import { Quaternion, Object3D, Vector3 } from 'three'
 
 export abstract class ExitingStateBase extends CharacterStateBase {
   protected vehicle: IControllable
-  protected seat: VehicleSeat
-  protected startPosition: THREE.Vector3 = new THREE.Vector3()
-  protected endPosition: THREE.Vector3 = new THREE.Vector3()
-  protected startRotation: THREE.Quaternion = new THREE.Quaternion()
-  protected endRotation: THREE.Quaternion = new THREE.Quaternion()
-  protected exitPoint: THREE.Object3D
-  protected dummyObj: THREE.Object3D
+  protected startPosition = new Vector3()
+  protected endPosition = new Vector3()
+  protected startRotation = new Quaternion()
+  protected endRotation = new Quaternion()
+  protected exitPoint: Object3D
+  protected dummyObj: Object3D
 
-  constructor(character: Character, seat: VehicleSeat) {
+  constructor(character: Character, public seat: VehicleSeat) {
     super(character)
 
     this.canFindVehiclesToEnter = false
@@ -29,10 +27,10 @@ export abstract class ExitingStateBase extends CharacterStateBase {
     this.startPosition.copy(this.character.position)
     this.startRotation.copy(this.character.quaternion)
 
-    this.dummyObj = new THREE.Object3D()
+    this.dummyObj = new Object3D()
   }
 
-  public detachCharacterFromVehicle(): void {
+  detachCharacterFromVehicle() {
     this.character.controlledObject = undefined
     this.character.resetOrientation()
     this.character.world.graphicsWorld.attach(this.character)
@@ -50,14 +48,15 @@ export abstract class ExitingStateBase extends CharacterStateBase {
     this.character.feetRaycast()
   }
 
-  public updateEndRotation(): void {
+  updateEndRotation(): void {
     const forward = Utils.getForward(this.exitPoint)
     forward.y = 0
     forward.normalize()
 
     this.character.world.graphicsWorld.attach(this.dummyObj)
     this.exitPoint.getWorldPosition(this.dummyObj.position)
-    let target = this.dummyObj.position.clone().add(forward)
+
+    const target = this.dummyObj.position.clone().add(forward)
     this.dummyObj.lookAt(target)
     this.seat.seatPointObject.parent.attach(this.dummyObj)
     this.endRotation.copy(this.dummyObj.quaternion)

@@ -1,26 +1,24 @@
-import * as THREE from 'three'
-import { SeatType } from '../enums/seat-type'
-import { Side } from '../enums/side'
 import { IControllable } from '../interfaces/icontrollable'
-import { VehicleDoor } from './vehicle-door'
-import { Vehicle } from './vehicle'
 import { Character } from '../characters/character'
+import { SeatType } from '../enums/seat-type'
+import { VehicleDoor } from './vehicle-door'
+import { Object3D } from 'three'
 
 export class VehicleSeat {
-  public vehicle: IControllable
-  public seatPointObject: THREE.Object3D
+  vehicle: IControllable
+  seatPointObject: Object3D
 
   // String of names of connected seats
-  public connectedSeatsString: string
+  connectedSeatsString: string
   // Actual seatPoint objects, need to be identified
   // by parsing connectedSeatsString *after* all seats are imported
-  public connectedSeats: VehicleSeat[] = []
+  connectedSeats: VehicleSeat[] = []
 
-  public type: SeatType
-  public entryPoints: THREE.Object3D[] = []
-  public door: VehicleDoor
+  type: SeatType
+  entryPoints: Object3D[] = []
+  door: VehicleDoor
 
-  public occupiedBy: Character = null
+  occupiedBy: Character = null
 
   constructor(vehicle: IControllable, object: THREE.Object3D, gltf: any) {
     this.vehicle = vehicle
@@ -38,7 +36,7 @@ export class VehicleSeat {
       }
 
       if (object.userData.hasOwnProperty('entry_points')) {
-        let entry_points = (object.userData.entry_points as string).split(';')
+        const entry_points = (object.userData.entry_points as string).split(';')
         for (const entry_point of entry_points) {
           if (entry_point.length > 0) {
             this.entryPoints.push(gltf.scene.getObjectByName(entry_point))
@@ -62,7 +60,7 @@ export class VehicleSeat {
     }
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number) {
     if (this.door !== undefined) {
       this.door.update(timeStep)
     }

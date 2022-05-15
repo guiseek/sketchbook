@@ -1,21 +1,21 @@
-import * as THREE from 'three'
-import { CharacterStateBase } from '../_stateLibrary'
-import { Character } from '../../character'
 import { VehicleSeat } from '../../../vehicles/vehicle-seat'
-import { Side } from '../../../enums/side'
+import * as Utils from '../../../core/function-library'
+import { CharacterStateBase } from '../_stateLibrary'
 import { SeatType } from '../../../enums/seat-type'
+import { Space } from '../../../enums/space'
+import { Character } from '../../character'
+import { Side } from '../../../enums/side'
 import { Driving } from './driving'
 import { Sitting } from './sitting'
-import * as Utils from '../../../core/function-library'
-import { Space } from '../../../enums/space'
+import { Quaternion, Vector3 } from 'three'
 
 export class SwitchingSeats extends CharacterStateBase {
   private toSeat: VehicleSeat
 
-  private startPosition: THREE.Vector3 = new THREE.Vector3()
-  private endPosition: THREE.Vector3 = new THREE.Vector3()
-  private startRotation: THREE.Quaternion = new THREE.Quaternion()
-  private endRotation: THREE.Quaternion = new THREE.Quaternion()
+  private startPosition = new Vector3()
+  private endPosition = new Vector3()
+  private startRotation = new Quaternion()
+  private endRotation = new Quaternion()
 
   constructor(
     character: Character,
@@ -53,7 +53,7 @@ export class SwitchingSeats extends CharacterStateBase {
     this.endRotation.copy(toSeat.seatPointObject.quaternion)
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number) {
     super.update(timeStep)
 
     if (this.animationEnded(timeStep)) {
@@ -66,14 +66,14 @@ export class SwitchingSeats extends CharacterStateBase {
       let factor = this.timer / this.animationLength
       let sineFactor = Utils.easeInOutSine(factor)
 
-      let lerpPosition = new THREE.Vector3().lerpVectors(
+      let lerpPosition = new Vector3().lerpVectors(
         this.startPosition,
         this.endPosition,
         sineFactor
       )
       this.character.setPosition(lerpPosition.x, lerpPosition.y, lerpPosition.z)
 
-      THREE.Quaternion.slerp(
+      Quaternion.slerp(
         this.startRotation,
         this.endRotation,
         this.character.quaternion,

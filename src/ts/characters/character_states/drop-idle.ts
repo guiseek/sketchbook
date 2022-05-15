@@ -1,11 +1,11 @@
-import {
-  CharacterStateBase,
-  Idle,
-  JumpIdle,
-  StartWalkForward,
-} from './_stateLibrary'
 import { ICharacterState } from '../../interfaces/icharacter-state'
 import { Character } from '../character'
+import {
+  CharacterStateBase,
+  StartWalkForward,
+  JumpIdle,
+  Idle,
+} from './_stateLibrary'
 
 export class DropIdle extends CharacterStateBase implements ICharacterState {
   constructor(character: Character) {
@@ -22,7 +22,7 @@ export class DropIdle extends CharacterStateBase implements ICharacterState {
     }
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number) {
     super.update(timeStep)
     this.character.setCameraRelativeOrientationTarget()
     if (this.animationEnded(timeStep)) {
@@ -31,7 +31,7 @@ export class DropIdle extends CharacterStateBase implements ICharacterState {
     this.fallInAir()
   }
 
-  public onInputChange(): void {
+  onInputChange() {
     super.onInputChange()
 
     if (this.character.actions.jump.justPressed) {

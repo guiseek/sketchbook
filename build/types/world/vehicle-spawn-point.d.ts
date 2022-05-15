@@ -1,13 +1,13 @@
-import * as THREE from 'three';
+import { LoadingManager } from '../core/loading-manager';
 import { ISpawnPoint } from '../interfaces/ispawn-point';
 import { World } from './World';
-import { LoadingManager } from '../core/loading-manager';
+import { Object3D } from 'three';
 export declare class VehicleSpawnPoint implements ISpawnPoint {
+    private object;
     type: string;
     driver: string;
     firstAINode: string;
-    private object;
-    constructor(object: THREE.Object3D);
+    constructor(object: Object3D);
     spawn(loadingManager: LoadingManager, world: World): void;
     private getNewVehicleByType;
 }

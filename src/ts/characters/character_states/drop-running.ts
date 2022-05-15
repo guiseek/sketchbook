@@ -1,12 +1,12 @@
+import { ICharacterState } from '../../interfaces/icharacter-state'
+import { Character } from '../character'
 import {
   CharacterStateBase,
-  EndWalk,
   JumpRunning,
+  EndWalk,
   Sprint,
   Walk,
 } from './_stateLibrary'
-import { ICharacterState } from '../../interfaces/icharacter-state'
-import { Character } from '../character'
 
 export class DropRunning extends CharacterStateBase implements ICharacterState {
   constructor(character: Character) {
@@ -16,7 +16,7 @@ export class DropRunning extends CharacterStateBase implements ICharacterState {
     this.playAnimation('drop_running', 0.1)
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number) {
     super.update(timeStep)
 
     this.character.setCameraRelativeOrientationTarget()
@@ -26,7 +26,7 @@ export class DropRunning extends CharacterStateBase implements ICharacterState {
     }
   }
 
-  public onInputChange(): void {
+  onInputChange() {
     super.onInputChange()
 
     if (this.noDirection()) {

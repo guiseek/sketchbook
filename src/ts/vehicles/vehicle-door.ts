@@ -1,32 +1,29 @@
-import * as THREE from 'three'
-import * as CANNON from 'cannon'
 import { Vehicle } from './vehicle'
 import * as Utils from '../core/function-library'
 import { VehicleSeat } from './vehicle-seat'
 import { Side } from '../enums/side'
+import { Vector3, Object3D, Euler } from 'three'
 
 export class VehicleDoor {
-  public vehicle: Vehicle
-  public seat: VehicleSeat
-  public doorObject: THREE.Object3D
-  public doorVelocity: number = 0
-  public doorWorldPos: THREE.Vector3 = new THREE.Vector3()
-  public lastTrailerPos: THREE.Vector3 = new THREE.Vector3()
-  public lastTrailerVel: THREE.Vector3 = new THREE.Vector3()
+  vehicle: Vehicle
+  doorObject: Object3D
+  doorVelocity = 0
+  doorWorldPos = new Vector3()
+  lastTrailerPos = new Vector3()
+  lastTrailerVel = new Vector3()
 
-  public rotation: number = 0
-  public achievingTargetRotation: boolean = false
-  public physicsEnabled: boolean = false
-  public targetRotation: number = 0
-  public rotationSpeed: number = 5
+  rotation = 0
+  achievingTargetRotation = false
+  physicsEnabled = false
+  targetRotation = 0
+  rotationSpeed = 5
 
-  public lastVehicleVel: THREE.Vector3 = new THREE.Vector3()
-  public lastVehiclePos: THREE.Vector3 = new THREE.Vector3()
+  lastVehicleVel = new Vector3()
+  lastVehiclePos = new Vector3()
 
   private sideMultiplier: number
 
-  constructor(seat: VehicleSeat, object: THREE.Object3D) {
-    this.seat = seat
+  constructor(public seat: VehicleSeat, object: Object3D) {
     this.vehicle = seat.vehicle as unknown as Vehicle
     this.doorObject = object
 
@@ -39,7 +36,7 @@ export class VehicleDoor {
     else this.sideMultiplier = 0
   }
 
-  public update(timestep: number): void {
+  update(timestep: number) {
     if (this.achievingTargetRotation) {
       if (this.rotation < this.targetRotation) {
         this.rotation += timestep * this.rotationSpeed
@@ -63,11 +60,11 @@ export class VehicleDoor {
     }
 
     this.doorObject.setRotationFromEuler(
-      new THREE.Euler(0, this.sideMultiplier * this.rotation, 0)
+      new Euler(0, this.sideMultiplier * this.rotation, 0)
     )
   }
 
-  public preStepCallback(): void {
+  preStepCallback() {
     if (this.physicsEnabled && !this.achievingTargetRotation) {
       // Door world position
       this.doorObject.getWorldPosition(this.doorWorldPos)
@@ -82,8 +79,8 @@ export class VehicleDoor {
       const quat = Utils.threeQuat(
         this.vehicle.rayCastVehicle.chassisBody.quaternion
       )
-      const back = new THREE.Vector3(0, 0, -1).applyQuaternion(quat)
-      const up = new THREE.Vector3(0, 1, 0).applyQuaternion(quat)
+      const back = new Vector3(0, 0, -1).applyQuaternion(quat)
+      const up = new Vector3(0, 1, 0).applyQuaternion(quat)
 
       // Get imaginary positions
       let trailerPos = back
@@ -126,29 +123,29 @@ export class VehicleDoor {
     }
   }
 
-  public open(): void {
+  open() {
     // this.resetPhysTrailer();
     this.achievingTargetRotation = true
     this.targetRotation = 1
   }
 
-  public close(): void {
+  close() {
     this.achievingTargetRotation = true
     this.targetRotation = 0
   }
 
-  public resetPhysTrailer(): void {
+  resetPhysTrailer() {
     // Door world position
     this.doorObject.getWorldPosition(this.doorWorldPos)
 
     // Get acceleration
-    this.lastVehicleVel = new THREE.Vector3()
+    this.lastVehicleVel = new Vector3()
 
     // Get vectors
     const quat = Utils.threeQuat(
       this.vehicle.rayCastVehicle.chassisBody.quaternion
     )
-    const back = new THREE.Vector3(0, 0, -1).applyQuaternion(quat)
+    const back = new Vector3(0, 0, -1).applyQuaternion(quat)
     this.lastTrailerPos.copy(back.add(this.doorWorldPos))
   }
 }

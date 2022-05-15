@@ -1,15 +1,15 @@
-import * as THREE from 'three';
-import * as CANNON from 'cannon';
-import { Vehicle } from './vehicle';
+import { Object3D } from 'three';
+import { VehicleHelicopterAction } from '../types/vehicle-action';
 import { IControllable } from '../interfaces/icontrollable';
 import { IWorldEntity } from '../interfaces/iworld-entity';
-import { KeyBinding } from '../core/key-binding';
 import { EntityType } from '../enums/entity-type';
-import { VehicleHelicopterAction } from '../types/vehicle-action';
+import { KeyBinding } from '../core/key-binding';
+import { Vehicle } from './vehicle';
+import * as CANNON from 'cannon';
 export declare class Helicopter extends Vehicle implements IControllable, IWorldEntity {
     actions: Record<VehicleHelicopterAction, KeyBinding>;
     entityType: EntityType;
-    rotors: THREE.Object3D[];
+    rotors: Object3D[];
     private enginePower;
     constructor(gltf: any);
     noDirectionPressed(): boolean;

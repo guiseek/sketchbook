@@ -1,20 +1,19 @@
-import * as THREE from 'three'
-import * as Utils from '../../core/function-library'
+import { getSignedAngleBetweenVectors } from '../../core/function-library'
+import { ICharacterState } from '../../interfaces/icharacter-state'
+import { Character } from '../character'
 import {
-  DropIdle,
+  StartWalkBackRight,
+  StartWalkBackLeft,
+  StartWalkForward,
+  StartWalkRight,
+  StartWalkLeft,
   DropRolling,
   DropRunning,
+  DropIdle,
   Falling,
   Sprint,
-  StartWalkBackLeft,
-  StartWalkBackRight,
-  StartWalkForward,
-  StartWalkLeft,
-  StartWalkRight,
   Walk,
 } from './_stateLibrary'
-import { Character } from '../character'
-import { ICharacterState } from '../../interfaces/icharacter-state'
 
 export abstract class CharacterStateBase implements ICharacterState {
   public character: Character
@@ -139,7 +138,7 @@ export abstract class CharacterStateBase implements ICharacterState {
 
   public setAppropriateStartWalkState(): void {
     let range = Math.PI
-    let angle = Utils.getSignedAngleBetweenVectors(
+    let angle = getSignedAngleBetweenVectors(
       this.character.orientation,
       this.character.getCameraRelativeMovementVector()
     )

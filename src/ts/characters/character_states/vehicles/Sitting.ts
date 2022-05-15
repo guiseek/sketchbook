@@ -1,9 +1,9 @@
-import { CharacterStateBase } from '../_stateLibrary'
-import { Character } from '../../character'
-import { VehicleSeat } from 'src/ts/vehicles/vehicle-seat'
 import { CloseVehicleDoorInside } from './close-vehicle-door-inside'
+import { VehicleSeat } from 'src/ts/vehicles/vehicle-seat'
+import { CharacterStateBase } from '../_stateLibrary'
 import { SeatType } from '../../../enums/seat-type'
 import { SwitchingSeats } from './switching-seats'
+import { Character } from '../../character'
 
 export class Sitting extends CharacterStateBase {
   private seat: VehicleSeat
@@ -28,7 +28,7 @@ export class Sitting extends CharacterStateBase {
     this.playAnimation('sitting', 0.1)
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number) {
     super.update(timeStep)
 
     if (
@@ -57,7 +57,7 @@ export class Sitting extends CharacterStateBase {
     }
   }
 
-  public onInputChange(): void {
+  onInputChange() {
     if (
       this.character.actions.seat_switch.justPressed &&
       this.seat.connectedSeats.length > 0

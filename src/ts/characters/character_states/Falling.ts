@@ -1,5 +1,5 @@
-import { CharacterStateBase } from './_stateLibrary'
 import { ICharacterState } from '../../interfaces/icharacter-state'
+import { CharacterStateBase } from './_stateLibrary'
 import { Character } from '../character'
 
 export class Falling extends CharacterStateBase implements ICharacterState {
@@ -15,7 +15,7 @@ export class Falling extends CharacterStateBase implements ICharacterState {
     this.playAnimation('falling', 0.3)
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number) {
     super.update(timeStep)
 
     this.character.setCameraRelativeOrientationTarget()

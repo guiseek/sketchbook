@@ -3,22 +3,22 @@ import { VehicleSpawnPoint } from './vehicle-spawn-point'
 import { CharacterSpawnPoint } from './character-spawn-point'
 import { World } from './World'
 import { LoadingManager } from '../core/loading-manager'
+import { Object3D } from 'three'
 
 export class Scenario {
-  public id: string
-  public name: string
-  public spawnAlways: boolean = false
-  public default: boolean = false
-  public world: World
-  public descriptionTitle: string
-  public descriptionContent: string
+  id: string
+  name: string
+  spawnAlways = false
+  default = false
+  descriptionTitle: string
+  descriptionContent: string
 
-  private rootNode: THREE.Object3D
+  private rootNode: Object3D
   private spawnPoints: ISpawnPoint[] = []
-  private invisible: boolean = false
+  private invisible = false
   private initialCameraAngle: number
 
-  constructor(root: THREE.Object3D, world: World) {
+  constructor(root: Object3D, public world: World) {
     this.rootNode = root
     this.world = world
     this.id = root.name
@@ -96,14 +96,14 @@ export class Scenario {
     })
   }
 
-  public createLaunchLink(): void {
+  createLaunchLink() {
     this.world.params[this.name] = () => {
       this.world.launchScenario(this.id)
     }
     this.world.scenarioGUIFolder.add(this.world.params, this.name)
   }
 
-  public launch(loadingManager: LoadingManager, world: World): void {
+  launch(loadingManager: LoadingManager, world: World) {
     this.spawnPoints.forEach((sp) => {
       sp.spawn(loadingManager, world)
     })

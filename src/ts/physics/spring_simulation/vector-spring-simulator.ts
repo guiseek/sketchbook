@@ -1,13 +1,13 @@
-import * as THREE from 'three'
 import { SimulatorBase } from './simulator-base'
 import { SimulationFrameVector } from './simulation-frame-vector'
 import { springV } from '../../core/function-library'
+import { Vector3 } from 'three'
 
 export class VectorSpringSimulator extends SimulatorBase {
-  public position: THREE.Vector3
-  public velocity: THREE.Vector3
-  public target: THREE.Vector3
-  public cache: SimulationFrameVector[]
+  position: Vector3
+  velocity: Vector3
+  target: Vector3
+  cache: SimulationFrameVector[]
 
   constructor(fps: number, mass: number, damping: number) {
     // Construct base
@@ -16,17 +16,15 @@ export class VectorSpringSimulator extends SimulatorBase {
     this.init()
   }
 
-  public init(): void {
-    this.position = new THREE.Vector3()
-    this.velocity = new THREE.Vector3()
-    this.target = new THREE.Vector3()
+  init() {
+    this.position = new Vector3()
+    this.velocity = new Vector3()
+    this.target = new Vector3()
 
     // Initialize cache by pushing two frames
     this.cache = []
     for (let i = 0; i < 2; i++) {
-      this.cache.push(
-        new SimulationFrameVector(new THREE.Vector3(), new THREE.Vector3())
-      )
+      this.cache.push(new SimulationFrameVector(new Vector3(), new Vector3()))
     }
   }
 
@@ -34,7 +32,7 @@ export class VectorSpringSimulator extends SimulatorBase {
    * Advances the simulation by given time step
    * @param {number} timeStep
    */
-  public simulate(timeStep: number): void {
+  simulate(timeStep: number) {
     // Generate new frames
     this.generateFrames(timeStep)
 
@@ -54,7 +52,7 @@ export class VectorSpringSimulator extends SimulatorBase {
   /**
    * Gets another simulation frame
    */
-  public getFrame(isLastFrame: boolean): SimulationFrameVector {
+  getFrame(isLastFrame: boolean): SimulationFrameVector {
     // Deep clone data from previous frame
     let newSpring = new SimulationFrameVector(
       this.lastFrame().position.clone(),

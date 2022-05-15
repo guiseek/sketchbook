@@ -1,37 +1,36 @@
+import { SpringSimulator } from '../physics/spring_simulation/spring-simulator'
+import { IControllable } from '../interfaces/icontrollable'
+import { VehicleCarAction } from '../types/vehicle-action'
+import { EntityType } from '../enums/entity-type'
+import { KeyBinding } from '../core/key-binding'
+import { Vehicle } from './vehicle'
+import { MathUtils, Object3D, Vector3 } from 'three'
+import * as Utils from '../core/function-library'
 import * as CANNON from 'cannon'
 
-import { Vehicle } from './vehicle'
-import { IControllable } from '../interfaces/icontrollable'
-import { KeyBinding } from '../core/key-binding'
-import * as THREE from 'three'
-import * as Utils from '../core/function-library'
-import { SpringSimulator } from '../physics/spring_simulation/spring-simulator'
-import { World } from '../world/world'
-import { EntityType } from '../enums/entity-type'
-import { VehicleCarAction } from '../types/vehicle-action'
-
 export class Car extends Vehicle implements IControllable {
-  public actions: Record<VehicleCarAction, KeyBinding>
-  public entityType: EntityType = EntityType.Car
-  public drive: string = 'awd'
+  actions: Record<VehicleCarAction, KeyBinding>
+  entityType: EntityType = EntityType.Car
+  drive: string = 'awd'
+
   get speed(): number {
     return this._speed
   }
-  private _speed: number = 0
+  private _speed = 0
 
   // private wheelsDebug: THREE.Mesh[] = [];
-  private steeringWheel: THREE.Object3D
-  private airSpinTimer: number = 0
+  private steeringWheel: Object3D
+  private airSpinTimer = 0
 
   private steeringSimulator: SpringSimulator
-  private gear: number = 1
+  private gear = 1
 
   // Transmission
   private shiftTimer: number
-  private timeToShift: number = 0.2
+  private timeToShift = 0.2
 
-  private canTiltForwards: boolean = false
-  private characterWantsToExit: boolean = false
+  private canTiltForwards = false
+  private characterWantsToExit = false
 
   constructor(gltf: any) {
     super(gltf, {
@@ -65,7 +64,7 @@ export class Car extends Vehicle implements IControllable {
     this.steeringSimulator = new SpringSimulator(60, 10, 0.6)
   }
 
-  public noDirectionPressed(): boolean {
+  noDirectionPressed(): boolean {
     let result =
       !this.actions.throttle.isPressed &&
       !this.actions.reverse.isPressed &&
@@ -75,7 +74,7 @@ export class Car extends Vehicle implements IControllable {
     return result
   }
 
-  public update(timeStep: number): void {
+  update(timeStep: number): void {
     super.update(timeStep)
 
     const tiresHaveContact = this.rayCastVehicle.numWheelsOnGround > 0
@@ -159,37 +158,37 @@ export class Car extends Vehicle implements IControllable {
     }
   }
 
-  public shiftUp(): void {
+  shiftUp(): void {
     this.gear++
     this.shiftTimer = this.timeToShift
 
     this.applyEngineForce(0)
   }
 
-  public shiftDown(): void {
+  shiftDown(): void {
     this.gear--
     this.shiftTimer = this.timeToShift
 
     this.applyEngineForce(0)
   }
 
-  public physicsPreStep(body: CANNON.Body, car: Car): void {
+  physicsPreStep(body: CANNON.Body, car: Car): void {
     // Constants
     const quat = Utils.threeQuat(body.quaternion)
-    const forward = new THREE.Vector3(0, 0, 1).applyQuaternion(quat)
-    const right = new THREE.Vector3(1, 0, 0).applyQuaternion(quat)
-    const up = new THREE.Vector3(0, 1, 0).applyQuaternion(quat)
+    const forward = new Vector3(0, 0, 1).applyQuaternion(quat)
+    const right = new Vector3(1, 0, 0).applyQuaternion(quat)
+    const up = new Vector3(0, 1, 0).applyQuaternion(quat)
 
     // Measure speed
     this._speed = this.collision.velocity.dot(Utils.cannonVector(forward))
 
     // Air spin
     // It takes 2 seconds until you have max spin air control since you leave the ground
-    let airSpinInfluence = THREE.MathUtils.clamp(this.airSpinTimer / 2, 0, 1)
-    airSpinInfluence *= THREE.MathUtils.clamp(this.speed, 0, 1)
+    let airSpinInfluence = MathUtils.clamp(this.airSpinTimer / 2, 0, 1)
+    airSpinInfluence *= MathUtils.clamp(this.speed, 0, 1)
 
-    const flipSpeedFactor = THREE.MathUtils.clamp(1 - this.speed, 0, 1)
-    const upFactor = up.dot(new THREE.Vector3(0, -1, 0)) / 2 + 0.5
+    const flipSpeedFactor = MathUtils.clamp(1 - this.speed, 0, 1)
+    const upFactor = up.dot(new Vector3(0, -1, 0)) / 2 + 0.5
     const flipOverInfluence = flipSpeedFactor * upFactor * 3
 
     const maxAirSpinMagnitude = 2.0
@@ -252,22 +251,18 @@ export class Car extends Vehicle implements IControllable {
     )
 
     const maxSteerVal = 0.8
-    let speedFactor = THREE.MathUtils.clamp(
-      this.speed * 0.3,
-      1,
-      Number.MAX_VALUE
-    )
+    let speedFactor = MathUtils.clamp(this.speed * 0.3, 1, Number.MAX_VALUE)
 
     if (this.actions.right.isPressed) {
       let steering = Math.min(-maxSteerVal / speedFactor, -driftCorrection)
-      this.steeringSimulator.target = THREE.MathUtils.clamp(
+      this.steeringSimulator.target = MathUtils.clamp(
         steering,
         -maxSteerVal,
         maxSteerVal
       )
     } else if (this.actions.left.isPressed) {
       let steering = Math.max(maxSteerVal / speedFactor, -driftCorrection)
-      this.steeringSimulator.target = THREE.MathUtils.clamp(
+      this.steeringSimulator.target = MathUtils.clamp(
         steering,
         -maxSteerVal,
         maxSteerVal
@@ -280,7 +275,7 @@ export class Car extends Vehicle implements IControllable {
     })
   }
 
-  public onInputChange(): void {
+  onInputChange(): void {
     super.onInputChange()
 
     const brakeForce = 1000000
@@ -309,7 +304,7 @@ export class Car extends Vehicle implements IControllable {
     }
   }
 
-  public inputReceiverInit(): void {
+  inputReceiverInit(): void {
     super.inputReceiverInit()
 
     this.world.updateControls([
@@ -344,7 +339,7 @@ export class Car extends Vehicle implements IControllable {
     ])
   }
 
-  public readCarData(gltf: any): void {
+  readCarData(gltf: any): void {
     gltf.scene.traverse((child: THREE.Object3D) => {
       if (child.hasOwnProperty('userData')) {
         if (child.userData.hasOwnProperty('data')) {

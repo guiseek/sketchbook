@@ -1,15 +1,15 @@
-import * as THREE from 'three';
-import { SeatType } from '../enums/seat-type';
 import { IControllable } from '../interfaces/icontrollable';
-import { VehicleDoor } from './vehicle-door';
 import { Character } from '../characters/character';
+import { SeatType } from '../enums/seat-type';
+import { VehicleDoor } from './vehicle-door';
+import { Object3D } from 'three';
 export declare class VehicleSeat {
     vehicle: IControllable;
-    seatPointObject: THREE.Object3D;
+    seatPointObject: Object3D;
     connectedSeatsString: string;
     connectedSeats: VehicleSeat[];
     type: SeatType;
-    entryPoints: THREE.Object3D[];
+    entryPoints: Object3D[];
     door: VehicleDoor;
     occupiedBy: Character;
     constructor(vehicle: IControllable, object: THREE.Object3D, gltf: any);
