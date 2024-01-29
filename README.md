@@ -9,6 +9,14 @@
 [![badge](https://img.shields.io/travis/swift502/sketchbook?style=flat-square)](https://travis-ci.org/guiseek/sketchbook)
 [![badge](https://img.shields.io/discord/730763393325334628?label=discord&style=flat-square)](https://discord.gg/fGuEqCe)
 
+# Final update (20. Feb 2023)
+
+As I have no more interest in developing this project, it comes to a conclusion. In order to remain honest about the true state of the project, I am archiving this repository.
+
+- If you wish to modify Sketchbook feel free to fork it.
+- To see if someone is currently maintaining a fork, check out the [Network Graph](https://github.com/swift502/Sketchbook/network).
+- The [NPM package](https://www.npmjs.com/package/sketchbook) name is available, and I'll give it away to anyone who asks for it. The package has never worked properly.
+
 # 📒 Sketchbook
 
 Simple web based game engine built on [three.js](https://github.com/mrdoob/three.js) and [cannon.js](https://github.com/schteppe/cannon.js) focused on third-person character controls and related gameplay mechanics.
